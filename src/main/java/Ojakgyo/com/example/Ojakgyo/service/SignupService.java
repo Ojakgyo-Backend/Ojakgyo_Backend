@@ -41,7 +41,7 @@ public class SignupService {
 
     private User creatUser(UserSignupDto request) {
         User user = User.builder()
-                .email((request.getEmail()))
+                .email(request.getEmail())
                 .password(request.getPassword())
                 .phone(request.getPhone())
                 .name(request.getName())

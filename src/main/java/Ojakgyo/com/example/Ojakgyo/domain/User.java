@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @Column
@@ -40,7 +40,7 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createAt;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDateTime updateAt;
 
     // 비밀번호 수정
