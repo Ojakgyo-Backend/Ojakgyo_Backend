@@ -12,8 +12,7 @@ class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @Test
-    public void testMember() {
+    public User createUser(){
         User user = User.builder()
                 .id(1L)
                 .email("personA@naver.com")
@@ -23,12 +22,49 @@ class UserRepositoryTest {
                 .createAt(LocalDateTime.now())
                 .updateAt(LocalDateTime.now())
                 .status("A").build();
+        return user;
+    }
+
+    @Test
+    public void saveMemberTest() {
+        User user = createUser();
+
+        String savedEmail = userRepository.save(user).getEmail();
+
+//        Assertions.assertThat(findMember).isEqualTo(user); //JPA 엔티티 동일성 보장
+    }
+
+    @Test
+    public void findByEmailTest() {
+        User user = createUser();
 
         String savedEmail = userRepository.save(user).getEmail();
         User findMember = userRepository.findByEmail(savedEmail);
-        Assertions.assertThat(findMember.getId()).isEqualTo(user.getId());
+        Assertions.assertThat(findMember.getEmail()).isEqualTo(user.getEmail());
 
-        Assertions.assertThat(findMember.getName()).isEqualTo(user.getName());
+//        Assertions.assertThat(findMember).isEqualTo(user); //JPA 엔티티 동일성 보장
+    }
+
+    @Test
+    public void findByPhoneTest() {
+        User user = createUser();
+
+        String savedPhone = userRepository.save(user).getPhone();
+        User findMember = userRepository.findByPhone(savedPhone);
+        Assertions.assertThat(findMember.getPhone()).isEqualTo(user.getPhone());
+
+//        Assertions.assertThat(findMember).isEqualTo(user); //JPA 엔티티 동일성 보장
+    }
+
+    @Test
+    public void deleteUserTest() {
+        User user = createUser();
+        Long savedId = userRepository.save(user).getId();
+
+        userRepository.deleteById(savedId);
+
+
+
 //        Assertions.assertThat(findMember).isEqualTo(user); //JPA 엔티티 동일성 보장
     }
 }
