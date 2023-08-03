@@ -16,7 +16,7 @@ public class SearchUserService {
     }
 
     // 아이디, 전화번호로 비밀번호 찾기
-    public User findByIdAndPhone(Long id, String phone) {
-        return userRepository.findByIdAndPhone(id, phone);
+    public User findByEmailAndPhone(String email, String phone) {
+        return userRepository.findByEmailAndPhone(email, phone);
     }
 }

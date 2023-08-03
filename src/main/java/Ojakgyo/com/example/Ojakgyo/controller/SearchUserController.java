@@ -35,9 +35,9 @@ public class SearchUserController {
 
     // 비밀번호 찾기
     @PostMapping("/login/getPassword")
-    public String searchPassword(@RequestParam Long id, String phone) throws IOException {
+    public String searchPassword(@RequestParam String email, String phone) throws IOException {
         try {
-            User findUser = searchUserService.findByIdAndPhone(id, phone);
+            User findUser = searchUserService.findByEmailAndPhone(email, phone);
             String findUserPwd = findUser.getPassword();
             if (findUserPwd == null){
                 throw new NoSuchDataException(ErrorCode.USER_NOT_EXIST);
