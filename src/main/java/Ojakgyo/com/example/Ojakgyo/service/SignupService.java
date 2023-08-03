@@ -46,6 +46,7 @@ public class SignupService {
                 .phone(request.getPhone())
                 .name(request.getName())
                 .createAt(LocalDateTime.now())
+                .role("ROLE_USER")
                 .status("A").build();
         return user;
     }
