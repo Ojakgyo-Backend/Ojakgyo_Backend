@@ -1,10 +1,15 @@
 package Ojakgyo.com.example.Ojakgyo.controller;
 
+import Ojakgyo.com.example.Ojakgyo.config.auth.PrincipalDetails;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
+import Ojakgyo.com.example.Ojakgyo.dto.MainDto;
 import Ojakgyo.com.example.Ojakgyo.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -17,31 +22,39 @@ import static java.util.regex.Pattern.matches;
 public class UserController {
     private final UserService userService;
 
-
-
-    // 로그인
-    @PostMapping("/login")
-    public @ResponseBody ResponseEntity<Object> login(@RequestBody Map<String, String> request, RedirectAttributes redirectAttributes) {
-        User user = userService.findByEmail(request.get("email"));
-        if (!matches(request.get("password"), user.getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-        }
-        return new ResponseEntity<>(Map.of("result", "로그인 성공"), HttpStatus.OK);
-    }
+    //메인
+    @GetMapping("/home")
+    public MainDto home(Authentication auth){
+        MainDto mainDto = null;
+        if(auth != null) {
+            User loginUser = userService.findByEmail(auth.getName());
+            if (loginUser != null) {
+                mainDto = MainDto.builder()
+                        .username(loginUser.getName()).build();
+            }
 
     //비밀번호 변경
     @GetMapping("/user/update")
-    public Object updateUser(@ModelAttribute String password, String email) {
-        User loginMember = userService.findByEmail(email);
-        userService.update(email,password);
+    public Object updateUser(@ModelAttribute String password, Authentication authentication) {
+        User user = getPrincipalUser(authentication);
+        userService.update(user,password);
         return Map.of("result", "비밀번호 변경 성공");
     }
 
     //회원탈퇴
-    @DeleteMapping
-    public Object deleteUser(String email) {
-        userService.delete(email);
+    @DeleteMapping("/user/delete")
+    public Object deleteUser(Authentication authentication) {
+        userService.delete(getPrincipalUser(authentication).getEmail());
         return Map.of("result", "회원 탈퇴 성공성공");
     }
 
+    @GetMapping
+    public User getUser(Authentication authentication) {
+        return getPrincipalUser(authentication);
+    }
+
+    private User getPrincipalUser(Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        return principal.getUser();
+    }
 }

@@ -14,8 +14,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void update(String email, String password) {
-        User user = userRepository.findByEmail(email);
+    public void update(User user, String password) {
         user.update(password);
     }
 
