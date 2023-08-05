@@ -27,14 +27,14 @@ public class SignupService {
 
     public void checkPhone(String phone) {
         Optional<User> user = Optional.ofNullable(userRepository.findByPhone(phone));
-        if (user.isEmpty()) {
+        if (!user.isEmpty()) {
             throw new SignupException(ErrorCode.NOT_VERIFIED_PHONE);
         }
     }
 
     public void checkDuplicateEmail(String email) {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
-        if (user.isEmpty()) {
+        if (!user.isEmpty()) {
             throw new SignupException(ErrorCode.DUPLICATED_EMAIL);
         }
     }
