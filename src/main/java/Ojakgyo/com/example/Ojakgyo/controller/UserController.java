@@ -32,9 +32,6 @@ public class UserController {
                 mainDto = MainDto.builder()
                         .username(loginUser.getName()).build();
             }
-        }
-        return mainDto;
-    }
 
     //비밀번호 변경
     @GetMapping("/user/update")

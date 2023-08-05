@@ -22,15 +22,15 @@ public class UserSignupController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     /*
     가능하다면 sms 인증 추가 + 비밀번호 암호화 추가
-    priate final SmsService smsService
+    private final SmsService smsService
     * */
 
     @PostMapping
     public Object register(@RequestBody UserSignupDto request) throws IOException {
 
         try {
-            signupService.checkPhone(request.getPhone());
-            request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+            signupService.checkDuplicatePhone(request.getPhone());
+            request.setPassword(request.getPassword());
             signupService.signup(request);
             return Map.of("result", "성공");
         } catch (Exception e) {
@@ -39,9 +39,25 @@ public class UserSignupController {
     }
 
     @PostMapping("/email")
-    public Object checkEmail(@RequestParam String email) {
-        signupService.checkDuplicateEmail(email);
-        return Map.of("result", "중복되지 않은 이메일입니다.");
+    public Object checkEmail(@RequestParam String email) throws IOException {
+        try {
+            signupService.checkDuplicateEmail(email);
+            return Map.of("result", "중복되지 않은 이메일입니다.");
+        } catch (Exception e) {
+            throw e;
+        }
+
+    }
+
+    @PostMapping("/phone-number")
+    public Object checkPhoneNumber(@RequestParam String phoneNumber) throws IOException {
+        try {
+            signupService.checkDuplicatePhone(phoneNumber);
+            return Map.of("result", "중복되지 않은 전화번호입니다.");
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
 
 }

@@ -25,7 +25,7 @@ public class SignupService {
     }
 
 
-    public void checkPhone(String phone) {
+    public void checkDuplicatePhone(String phone) {
         Optional<User> user = Optional.ofNullable(userRepository.findByPhone(phone));
         if (!user.isEmpty()) {
             throw new SignupException(ErrorCode.NOT_VERIFIED_PHONE);
