@@ -24,14 +24,17 @@ public class UserController {
 
     //메인
     @GetMapping("/home")
-    public MainDto home(Authentication auth){
+    public MainDto home(Authentication auth) {
         MainDto mainDto = null;
-        if(auth != null) {
+        if (auth != null) {
             User loginUser = userService.findByEmail(auth.getName());
             if (loginUser != null) {
                 mainDto = MainDto.builder()
                         .username(loginUser.getName()).build();
             }
+        }
+        return mainDto;
+    }
 
     //비밀번호 변경
     @GetMapping("/user/update")
