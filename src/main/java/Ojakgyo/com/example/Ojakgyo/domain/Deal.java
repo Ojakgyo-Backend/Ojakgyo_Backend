@@ -14,26 +14,22 @@ import java.time.LocalDateTime;
 @Table(name = "deal")
 public class Deal {
     @Id
-    @Column
+    @Column(name = "deal_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 거래 상태
+    // 거래 상태 [DEALING,COMPLETED,CANCELED]
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String dealStatus;
+    private DealStatus dealStatus;
 
-    // 입금 현황
+    // 입금 현황 [0,1]
     @Column(nullable = false)
-    private String depositStatus;
+    private Integer depositStatus;
 
-    @Column(length = 300, nullable = false)
+    // 물품 상태
+    @Column(length = 300)
     private String condition;
-
-    @Column(nullable = false)
-    private LocalDateTime dealTime;
-
-    @Column(length = 300, nullable = false)
-    private String dealPlace;
 
     @Column(length = 300, nullable = false)
     private String item;
@@ -41,29 +37,17 @@ public class Deal {
     @Column(nullable = false)
     private Long price;
 
-    // 판매자 이름 (FK)
+    // 판매자 (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     @Column(length = 100, nullable = false)
-    private String sellerName;
+    private User seller;
 
-    // 판매자 전화번호 (FK)
-    @Column(length = 100, nullable = false, unique = true)
-    private String sellerCellphone;
-
-    // 판매자 계좌번호 (FK)
-    @Column(length = 100, nullable = false, unique = true)
-    private String sellerAccount;
-
-    // 판매자 계좌 은행 (FK)
+    // 구매자 (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     @Column(length = 100, nullable = false)
-    private String sellerAccountBank;
-
-    // 구매자 이름 (FK)
-    @Column(length = 100, nullable = false)
-    private String buyerName;
-
-    // 구매자 전화번호 (fK)
-    @Column(length = 100, nullable = false, unique = true)
-    private String buyerCellphone;
+    private User buyer;
 
     @Column(nullable = false)
     private LocalDateTime createAt;
@@ -72,36 +56,24 @@ public class Deal {
     private LocalDateTime updateAt;
 
     // 락커 아이디 (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "locker_id")
     @Column(nullable = false)
-    private Long lockerId;
-
-    // 락커 비밀번호
-    @Column(length = 100, nullable = false)
-    private String lockerPwd;
-
-    // 락커 비밀번호 생성 시간
-    @Column(length = 100)
-    private String createLockerPwdAt;
+    private Locker lockerId;
 
 
+    /**
+     * 비지니스 로직
+     * **/
 
-    // 락커 비밀번호 생성 시간 수정
-    public void updateCreateLockerPwdAt(String createLockerPwdAt){
-        this.createLockerPwdAt = createLockerPwdAt;
-    }
-
-    // 락커 비밀번호 수정
-    public void updateLockerPwd(String lockerPwd){
-        this.lockerPwd = lockerPwd;
-    }
 
     // 입금 현황 수정
-    public void updateDepositStatus(String depositStatus){
+    public void updateDepositStatus(Integer depositStatus){
         this.depositStatus = depositStatus;
     }
 
     // 거래 상태 수정
-    public void updateDealStatus(String dealStatus){
+    public void updateDealStatus(DealStatus dealStatus){
         this.dealStatus = dealStatus;
     }
 }
