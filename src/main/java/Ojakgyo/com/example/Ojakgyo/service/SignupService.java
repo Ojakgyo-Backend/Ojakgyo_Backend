@@ -25,16 +25,16 @@ public class SignupService {
     }
 
 
-    public void checkPhone(String phone) {
+    public void checkDuplicatePhone(String phone) {
         Optional<User> user = Optional.ofNullable(userRepository.findByPhone(phone));
-        if (user.isEmpty()) {
+        if (!user.isEmpty()) {
             throw new SignupException(ErrorCode.NOT_VERIFIED_PHONE);
         }
     }
 
     public void checkDuplicateEmail(String email) {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
-        if (user.isEmpty()) {
+        if (!user.isEmpty()) {
             throw new SignupException(ErrorCode.DUPLICATED_EMAIL);
         }
     }
@@ -46,6 +46,7 @@ public class SignupService {
                 .phone(request.getPhone())
                 .name(request.getName())
                 .createAt(LocalDateTime.now())
+                .role("ROLE_USER")
                 .status("A").build();
         return user;
     }
