@@ -30,7 +30,7 @@ public class UserSignupController {
 
         try {
             signupService.checkDuplicatePhone(request.getPhone());
-            request.setPassword(request.getPassword());
+            request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
             signupService.signup(request);
             return Map.of("result", "성공");
         } catch (Exception e) {
