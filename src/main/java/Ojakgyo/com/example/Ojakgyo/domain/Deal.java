@@ -1,7 +1,6 @@
 package Ojakgyo.com.example.Ojakgyo.domain;
 
 import lombok.*;
-import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -59,7 +58,7 @@ public class Deal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locker_id")
     @Column(nullable = false)
-    private Locker lockerId;
+    private Long lockerId;
 
 
     /**
