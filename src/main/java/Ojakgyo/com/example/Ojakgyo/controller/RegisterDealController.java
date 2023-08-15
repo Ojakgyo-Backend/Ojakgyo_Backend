@@ -32,7 +32,7 @@ public class RegisterDealController {
     private final UserController userController;
 
     // 락커 id로 조회
-    @GetMapping("/deal/search-locker")
+    @GetMapping("/search-locker")
     public SearchLockerDto.Response searchLocker(Authentication auth, SearchLockerDto.Request requestLockerId){
         try {
             Long lockerId = requestLockerId.getLockerId();
@@ -50,7 +50,7 @@ public class RegisterDealController {
     }
 
     // email (아이디)로 거래 대상자 조회
-    @GetMapping("/deal/search-dealer")
+    @GetMapping("/search-dealer")
     public SearchDealerDto.Response searchDealer(Authentication auth, SearchDealerDto.Request requestEmail) {
         try {
             String email = requestEmail.getEmail();
@@ -69,7 +69,7 @@ public class RegisterDealController {
     }
 
     // 거래 대상자의 거래 내역 간단 조회
-    @GetMapping("deal/search-dealer/history")
+    @GetMapping("/search-dealer/history")
     public SearchDealHistoryDto.Response showDealHistory(Authentication auth, SearchDealHistoryDto.Request requestEmail) {
         try {
             String email = requestEmail.getEmail();
