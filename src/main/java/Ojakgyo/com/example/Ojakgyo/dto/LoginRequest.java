@@ -3,7 +3,7 @@ package Ojakgyo.com.example.Ojakgyo.dto;
 import lombok.Data;
 
 @Data
-public class LoginRequestDto {
+public class LoginRequest {
     private String username;
     private String password;
 }

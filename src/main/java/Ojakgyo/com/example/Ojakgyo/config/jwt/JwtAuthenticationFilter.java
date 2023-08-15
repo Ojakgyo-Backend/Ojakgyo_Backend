@@ -1,7 +1,7 @@
 package Ojakgyo.com.example.Ojakgyo.config.jwt;
 
 import Ojakgyo.com.example.Ojakgyo.config.auth.PrincipalDetails;
-import Ojakgyo.com.example.Ojakgyo.dto.LoginRequestDto;
+import Ojakgyo.com.example.Ojakgyo.dto.LoginRequest;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,9 +33,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throws AuthenticationException {
         // request에 있는 username과 password를 파싱해서 자바 Object로 받기
         ObjectMapper om = new ObjectMapper();
-        LoginRequestDto loginRequestDto = null;
+        LoginRequest loginRequestDto = null;
         try {
-            loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class);
+            loginRequestDto = om.readValue(request.getInputStream(), LoginRequest.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
