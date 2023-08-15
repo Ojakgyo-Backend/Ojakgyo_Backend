@@ -55,9 +55,7 @@ public class Deal {
     // 락커 아이디 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locker_id")
-
-    @Column(nullable = false)
-    private Long lockerId;
+    private Locker locker;
 
 
     /**
