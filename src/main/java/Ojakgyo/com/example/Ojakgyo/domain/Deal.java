@@ -38,14 +38,12 @@ public class Deal {
 
     // 판매자 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    @Column(length = 100, nullable = false)
+    @JoinColumn
     private User seller;
 
     // 구매자 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    @Column(length = 100, nullable = false)
+    @JoinColumn
     private User buyer;
 
     @Column(nullable = false)
@@ -57,6 +55,7 @@ public class Deal {
     // 락커 아이디 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locker_id")
+
     @Column(nullable = false)
     private Long lockerId;
 
