@@ -8,6 +8,7 @@ import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealDto;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchDealHistoryDto;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerDto;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchLockerDto;
+import Ojakgyo.com.example.Ojakgyo.dto.SearchLockerResponse;
 import Ojakgyo.com.example.Ojakgyo.exception.ErrorCode;
 import Ojakgyo.com.example.Ojakgyo.exception.NoSuchDataException;
 import Ojakgyo.com.example.Ojakgyo.service.*;
@@ -33,17 +34,19 @@ public class RegisterDealController {
 
     // 락커 id로 조회
     @GetMapping("/search-locker")
-    public SearchLockerDto.Response searchLocker(Authentication auth, SearchLockerDto.Request requestLockerId){
+    public SearchLockerResponse searchLocker(Authentication auth, Long lockerId){
         try {
-            Long lockerId = requestLockerId.getLockerId();
             Optional<Locker> findLocker = searchLockerService.findById(lockerId);
             // 검색한 락커 아이디가 없을 경우 에러 처리
             if (findLocker == null) {
                 throw new NoSuchDataException(ErrorCode.LOCKER_NOT_EXIST);
             }
-            SearchLockerDto.Response response = new SearchLockerDto.Response(findLocker.get().getId(), findLocker.get().getAddress());
+            SearchLockerResponse searchLockeresponse= SearchLockerResponse.builder()
+                    .lockerId(lockerId)
+                    .address(findLocker.get().getAddress())
+                    .build();
 
-            return response;
+            return searchLockeresponse;
         } catch (Exception e) {
             throw e;
         }
