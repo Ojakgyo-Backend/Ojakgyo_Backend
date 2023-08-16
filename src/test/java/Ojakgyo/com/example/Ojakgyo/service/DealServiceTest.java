@@ -5,6 +5,7 @@ import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.LockerStatus;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
+import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
 import Ojakgyo.com.example.Ojakgyo.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -13,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class DealServiceTest {
@@ -26,7 +25,7 @@ class DealServiceTest {
     @Autowired
     LockerRepository lockerRepository;
 
-    public User createUser(String email, String phone){
+    private User createUser(String email, String phone){
         User user = User.builder()
                 .email(email)
                 .password("a12345678")
@@ -36,6 +35,20 @@ class DealServiceTest {
                 .updateAt(LocalDateTime.now())
                 .status("A").build();
         return user;
+    }
+
+    private RegisterDealRequest createRequest(Long deallerId){
+        RegisterDealRequest request = RegisterDealRequest.builder()
+                .bank("하나")
+                .account("12453")
+                .price(124L)
+                .itemName("맥북")
+                .condition("좋음")
+                .dealerId(deallerId)
+                .lockerId(1L)
+                .isSeller(true)
+                .build();
+        return request;
     }
 
 //    @Test
@@ -52,7 +65,31 @@ class DealServiceTest {
 //    }
 
     @Test
-    void 거래등록_테스트(){
+    void 거래대상자_조회_테스트(){
+        //given
+        User user = createUser("aaa", "01011112232");
+        User dealer = createUser("bbb","01000011131");
+        Locker locker = Locker.builder()
+                .address("부산 광역시 용소로 45")
+                .lockerStatus(LockerStatus.NOT_IN_USE)
+                .password("1234")
+                .createLockerPwdAt(LocalDateTime.now()).build();
+        userRepository.save(user);
+        userRepository.save(dealer);
+        lockerRepository.save(locker);
+        for(int i=0 ; i < 3; i++){
+            dealService.createDeal(createRequest(dealer.getId()),user);
+        }
+
+        //when
+        SearchDealerResponse searchDealerResponse = dealService.getDealerDealList(dealer.getEmail());
+
+        //then
+        Assertions.assertThat(dealer.getEmail()).isEqualTo(searchDealerResponse.getEmail());
+    }
+
+    @Test
+    void 거래등록저장_테스트(){
         //given
         User user = createUser("zzz", "01011112222");
         User dealer = createUser("qqq","01000011101");
@@ -76,7 +113,7 @@ class DealServiceTest {
         .build();
 
         //when
-        Deal deal = dealService.registerDeal(request,user);
+        Deal deal = dealService.createDeal(request,user);
 
         //then
         Assertions.assertThat(user.getId()).isEqualTo(deal.getSeller().getId());
