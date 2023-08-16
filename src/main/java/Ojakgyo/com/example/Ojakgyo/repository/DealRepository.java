@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface DealRepository extends JpaRepository<Deal,Long> {
     @Query(value = "SELECT deal_status, item, update_at FROM deal WHERE seller_id = :id OR buyer_id =:id ", nativeQuery = true)
-    List<DealListInterface> findDealListById(long id);
+    List<DealListInterface> findDealerDealsById(long id);
+    Deal findDealById(long dealId);
 }
