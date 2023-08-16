@@ -4,6 +4,7 @@ import Ojakgyo.com.example.Ojakgyo.domain.Deal;
 import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
+import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
 import Ojakgyo.com.example.Ojakgyo.dto.DealListInterface;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
@@ -26,7 +27,9 @@ public class DealService {
 
         Deal deal = Deal.builder()
                 .dealStatus(DealStatus.DEALING)
-                .depositStatus(0)
+                .bank(request.getBank())
+                .account(request.getAccount())
+                .depositStatus(Boolean.FALSE)
                 .condition(request.getCondition())
                 .item(request.getItemName())
                 .price(request.getPrice())
@@ -42,13 +45,37 @@ public class DealService {
 
     public SearchDealerResponse getDealerDealList(String email){
         User dealer = userService.findByEmail(email);
-        List<DealListInterface> dealLists = dealRepository.findDealListById(dealer.getId());
+        List<DealListInterface> dealLists = dealRepository.findDealerDealsById(dealer.getId());
         SearchDealerResponse searchDealerResponse = SearchDealerResponse.builder()
                 .email(dealer.getEmail())
                 .name(dealer.getName())
                 .phone(dealer.getPhone())
                 .dealLists(dealLists).build();
         return searchDealerResponse;
+    }
+
+    public DealDetailsResponse getDealDetails(Long dealId){
+        Deal deal = dealRepository.findDealById(dealId);
+        Locker locker = lockerService.findById(deal.getLocker().getId());
+        User seller = findUser(deal.getSeller().getId());
+        User buyer = findUser(deal.getBuyer().getId());
+        DealDetailsResponse dealDetailsResponse = DealDetailsResponse.builder()
+                .lockerId(locker.getId())
+                .lockerAddress(locker.getAddress())
+                .sellerName(seller.getName())
+                .sellerPhone(seller.getPhone())
+                .buyerName(buyer.getName())
+                .buyerPhone(buyer.getPhone())
+                .bank(deal.getBank())
+                .account(deal.getAccount())
+                .price(deal.getPrice())
+                .itemName(deal.getItem())
+                .condition(deal.getCondition())
+                .depositStatus(deal.getDepositStatus())
+                .lockerPassword(locker.getPassword())
+                .dealStatus(String.valueOf(deal.getDealStatus()))
+                .build();
+        return dealDetailsResponse;
     }
 
     private Locker findLocker(Long lockerId){
