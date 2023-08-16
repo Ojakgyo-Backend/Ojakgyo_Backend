@@ -2,8 +2,8 @@ package Ojakgyo.com.example.Ojakgyo.controller;
 
 import Ojakgyo.com.example.Ojakgyo.dto.UserSignupDto;
 import Ojakgyo.com.example.Ojakgyo.repository.UserRepository;
-import Ojakgyo.com.example.Ojakgyo.service.SearchUserService;
 import Ojakgyo.com.example.Ojakgyo.service.SignupService;
+import Ojakgyo.com.example.Ojakgyo.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ class SearchUserControllerTest {
     @Autowired
     SearchUserController searchUserController;
     @Autowired
-    SearchUserService searchUserService;
+    UserService userService;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -36,7 +36,7 @@ class SearchUserControllerTest {
         signupService.signup(userSignupDto);
 
         //then
-        Assertions.assertThat(searchUserService.findByNameAndPhone(userSignupDto.getName(),userSignupDto.getPhone()));
+        Assertions.assertThat(userService.findByNameAndPhone(userSignupDto.getName(),userSignupDto.getPhone()));
     }
 
     @Test
@@ -56,7 +56,7 @@ class SearchUserControllerTest {
         signupService.signup(userSignupDto);
 
         //then
-        Assertions.assertThat(searchUserService.findByEmailAndPhone(userSignupDto.getEmail(),userSignupDto.getPhone()));
+        Assertions.assertThat(userService.findByEmailAndPhone(userSignupDto.getEmail(),userSignupDto.getPhone()));
     }
     @Test
     void searchPasswordUnSuccess() {

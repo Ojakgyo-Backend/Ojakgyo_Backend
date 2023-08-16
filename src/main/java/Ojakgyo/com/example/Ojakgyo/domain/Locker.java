@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -32,6 +33,6 @@ public class Locker {
     private String password;
 
     // 락커 비밀번호 생성 시간
-    private String createLockerPwdAt;
+    private LocalDateTime createLockerPwdAt;
 
 }

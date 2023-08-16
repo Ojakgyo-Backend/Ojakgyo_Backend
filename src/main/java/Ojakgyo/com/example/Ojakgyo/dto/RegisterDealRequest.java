@@ -15,5 +15,5 @@ public class RegisterDealRequest{
     private String condition;
     private Long dealerId;
     private Long lockerId;
-    private boolean isSeller;   //판매자면 True, 구매자면 False
+    private Boolean isSeller;   //판매자면 True, 구매자면 False
 }

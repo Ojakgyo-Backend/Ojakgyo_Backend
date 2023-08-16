@@ -17,9 +17,6 @@ import javax.validation.constraints.Size;
 @Setter
 @Data
 public class UserSignupDto {
-    public UserSignupDto() {
-
-    }
 
     @Size(min=2, max=100, message = "이메일은 2글자 이상, 100글자 이하로 작성해 주세요.")
     @NotBlank(message = "이메일을 입력해 주세요.")

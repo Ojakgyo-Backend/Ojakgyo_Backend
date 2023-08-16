@@ -38,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 .antMatchers("/user/**")
                 .access("hasRole('ROLE_USER')")
+                .antMatchers("/deal/**")
+                .access("hasRole('ROLE_USER')")
                 .anyRequest().permitAll();	//다른 요청은 권한 허용
     }
 }
