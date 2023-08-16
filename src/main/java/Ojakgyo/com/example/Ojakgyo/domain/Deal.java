@@ -38,12 +38,12 @@ public class Deal {
 
     // 판매자 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "seller_id")
     private User seller;
 
     // 구매자 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "buyer_id")
     private User buyer;
 
     @Column(nullable = false)
