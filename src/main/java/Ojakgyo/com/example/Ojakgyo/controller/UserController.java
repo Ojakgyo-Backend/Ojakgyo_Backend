@@ -37,12 +37,14 @@ public class UserController {
     }
 
     //비밀번호 변경
+    /** 안 바뀜
     @GetMapping("/user/update")
-    public Object updateUser(@ModelAttribute String password, Authentication authentication) {
+    public Object updateUser(@RequestParam String password, Authentication authentication) {
         User user = getPrincipalUser(authentication);
         userService.update(user,password);
         return Map.of("result", "비밀번호 변경 성공");
     }
+    */
 
     //회원탈퇴
     @DeleteMapping("/user/delete")

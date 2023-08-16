@@ -38,7 +38,7 @@ public class UserSignupController {
         }
     }
 
-    @PostMapping("/email")
+    @GetMapping("/email")
     public Object checkEmail(@RequestParam String email) throws IOException {
         try {
             signupService.checkDuplicateEmail(email);
@@ -49,7 +49,7 @@ public class UserSignupController {
 
     }
 
-    @PostMapping("/phone-number")
+    @GetMapping("/phone-number")
     public Object checkPhoneNumber(@RequestParam String phoneNumber) throws IOException {
         try {
             signupService.checkDuplicatePhone(phoneNumber);
