@@ -25,8 +25,6 @@ public class Locker {
     private LockerStatus lockerStatus; //[IN_USE,NOT_IN_USE]
 
     //락커 주소
-    @Embedded
-    @Column(nullable = false)
     private String address;
 
     //락커 비밀번호
