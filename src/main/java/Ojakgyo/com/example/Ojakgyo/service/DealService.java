@@ -86,11 +86,19 @@ public class DealService {
                 .condition(deal.getCondition())
                 .depositStatus(deal.getDepositStatus())
                 .lockerPassword(locker.getPassword())
+                .createLockerPwdAt(locker.getCreateLockerPwdAt())
                 .dealStatus(String.valueOf(deal.getDealStatus()))
                 .build();
         return dealDetailsResponse;
     }
 
+    public String changPassword(Long dealID) {
+        Deal deal = dealRepository.findDealById(dealID);
+        Locker locker = lockerService.findById(deal.getLocker().getId());
+        String changedPassword = locker.updatePassword();
+        lockerService.saveLocker(locker);
+        return changedPassword;
+    }
 
     public List<UserDealListResponse> getUserDealList(Long userId){
         List<Deal> dealList = dealRepository.findAllByUserId(userId);
@@ -129,6 +137,7 @@ public class DealService {
         }
         return users;
     }
+
 
 
 }

@@ -45,9 +45,15 @@ public class DealController {
     }
 
     @GetMapping("/buyer-deposit-complete")
-    public Object sellerDepositCheck(Authentication authentication,@RequestParam Long dealId){
+    public Object buyerDepositComplete(Authentication authentication,@RequestParam Long dealId){
         dealService.completeBuyerDeposit(dealId);
         return Map.of("result", "입금 전에서 완료로 상태 변경 성공");
+    }
+
+    @GetMapping("/seller-deposit-check")
+    public String sellerDepositCheck(Authentication authentication,@RequestParam Long dealID){
+        String changedPassword = dealService.changPassword(dealID);
+        return changedPassword;
     }
 
     @GetMapping("/deal-details")

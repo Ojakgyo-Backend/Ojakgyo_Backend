@@ -23,6 +23,10 @@ public class LockerService {
         return lockerRepository.save(locker);
     }
 
+    public void saveLocker(Locker locker){
+        lockerRepository.save(locker);
+    }
+
     // 락커 아이디로 락커 찾기
     public Locker findById(Long lockerId) {
         return lockerRepository.findById(lockerId).get();

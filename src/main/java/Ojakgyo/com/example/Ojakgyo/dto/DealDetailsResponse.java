@@ -22,6 +22,6 @@ public class DealDetailsResponse {
     private String condition;
     private Boolean depositStatus;
     private String lockerPassword;
-    private String createLockerPwdAt;
+    private LocalDateTime createLockerPwdAt;
     private String dealStatus;
 }
