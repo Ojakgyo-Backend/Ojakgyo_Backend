@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -39,13 +42,17 @@ public class DealService {
                 .buyer(users[1])
                 .locker(findLocker(request.getLockerId()))
                 .build();
-
         return dealRepository.save(deal);
     }
 
     public SearchDealerResponse getDealerDealList(String email){
         User dealer = userService.findByEmail(email);
-        List<DealListInterface> dealLists = dealRepository.findDealerDealsById(dealer.getId());
+        List<DealListInterface> dealLists = new ArrayList<>();
+        dealLists.addAll(dealRepository.findBySellerId(dealer.getId()));
+        dealLists.addAll(dealRepository.findByBuyerId(dealer.getId()));
+
+        dealLists.sort(Comparator.comparing(DealListInterface::getUpdateAt));
+
         SearchDealerResponse searchDealerResponse = SearchDealerResponse.builder()
                 .email(dealer.getEmail())
                 .name(dealer.getName())

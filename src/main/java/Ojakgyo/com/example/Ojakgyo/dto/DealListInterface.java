@@ -1,6 +1,5 @@
 package Ojakgyo.com.example.Ojakgyo.dto;
 
-
 import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 
 import java.time.LocalDateTime;
