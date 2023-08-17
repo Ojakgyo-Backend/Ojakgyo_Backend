@@ -86,6 +86,7 @@ public class DealService {
                 .condition(deal.getCondition())
                 .depositStatus(deal.getDepositStatus())
                 .lockerPassword(locker.getPassword())
+                .createLockerPwdAt(locker.getCreateLockerPwdAt())
                 .dealStatus(String.valueOf(deal.getDealStatus()))
                 .build();
         return dealDetailsResponse;

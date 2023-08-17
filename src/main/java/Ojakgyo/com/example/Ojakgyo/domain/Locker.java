@@ -46,6 +46,7 @@ public class Locker {
             }
         }
         this.password = buf.toString();
+        this.createLockerPwdAt = LocalDateTime.now();
         return this.password;
     }
 }
