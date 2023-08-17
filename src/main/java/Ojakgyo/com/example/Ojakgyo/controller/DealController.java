@@ -3,10 +3,7 @@ package Ojakgyo.com.example.Ojakgyo.controller;
 import Ojakgyo.com.example.Ojakgyo.config.auth.PrincipalDetails;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
-import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
-import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
-import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
-import Ojakgyo.com.example.Ojakgyo.dto.SearchLockerResponse;
+import Ojakgyo.com.example.Ojakgyo.dto.*;
 import Ojakgyo.com.example.Ojakgyo.exception.ErrorCode;
 import Ojakgyo.com.example.Ojakgyo.exception.NoSuchDataException;
 import Ojakgyo.com.example.Ojakgyo.service.*;
@@ -15,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -42,6 +40,11 @@ public class DealController {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    @GetMapping("/lockers")
+    public List<SearchLockerResponse> getLockers(Authentication authentication){
+        return lockerService.findAll();
     }
 
     @GetMapping("/buyer-deposit-complete")
