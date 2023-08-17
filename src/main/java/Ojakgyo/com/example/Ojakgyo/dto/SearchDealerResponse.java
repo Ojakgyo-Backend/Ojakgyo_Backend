@@ -1,5 +1,6 @@
 package Ojakgyo.com.example.Ojakgyo.dto;
 
+import Ojakgyo.com.example.Ojakgyo.domain.DealerDealListInterface;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,5 +12,5 @@ public class SearchDealerResponse {
     private String email;
     private String name;
     private String phone;
-    private List<DealListInterface> dealLists;
+    private List<DealerDealListInterface> dealLists;
 }

@@ -5,7 +5,7 @@ import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
 import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
-import Ojakgyo.com.example.Ojakgyo.dto.DealListInterface;
+import Ojakgyo.com.example.Ojakgyo.domain.DealerDealListInterface;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -47,11 +46,11 @@ public class DealService {
 
     public SearchDealerResponse getDealerDealList(String email){
         User dealer = userService.findByEmail(email);
-        List<DealListInterface> dealLists = new ArrayList<>();
+        List<DealerDealListInterface> dealLists = new ArrayList<>();
         dealLists.addAll(dealRepository.findBySellerId(dealer.getId()));
         dealLists.addAll(dealRepository.findByBuyerId(dealer.getId()));
 
-        dealLists.sort(Comparator.comparing(DealListInterface::getUpdateAt));
+        dealLists.sort(Comparator.comparing(DealerDealListInterface::getUpdateAt));
 
         SearchDealerResponse searchDealerResponse = SearchDealerResponse.builder()
                 .email(dealer.getEmail())
