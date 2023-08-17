@@ -22,9 +22,15 @@ public class Deal {
     @Column(nullable = false)
     private DealStatus dealStatus;
 
+    @Column(nullable = false)
+    String bank;
+
+    @Column(nullable = false)
+    String account;
+
     // 입금 현황 [0,1]
     @Column(nullable = false)
-    private Integer depositStatus;
+    private Boolean depositStatus;
 
     // 물품 상태
     @Column(length = 300)
@@ -64,7 +70,7 @@ public class Deal {
 
 
     // 입금 현황 수정
-    public void updateDepositStatus(Integer depositStatus){
+    public void updateDepositStatus(Boolean depositStatus){
         this.depositStatus = depositStatus;
     }
 
