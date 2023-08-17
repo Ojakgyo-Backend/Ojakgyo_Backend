@@ -1,25 +1,17 @@
 package Ojakgyo.com.example.Ojakgyo.controller;
 
 import Ojakgyo.com.example.Ojakgyo.config.auth.PrincipalDetails;
-import Ojakgyo.com.example.Ojakgyo.domain.Deal;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
-import Ojakgyo.com.example.Ojakgyo.dto.MainDto;
-import Ojakgyo.com.example.Ojakgyo.dto.UserDealListResponse;
+import Ojakgyo.com.example.Ojakgyo.dto.MainResponse;
+import Ojakgyo.com.example.Ojakgyo.dto.UserDealList;
 import Ojakgyo.com.example.Ojakgyo.service.DealService;
 import Ojakgyo.com.example.Ojakgyo.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
-
-import static java.util.regex.Pattern.matches;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,10 +21,10 @@ public class UserController {
 
     //메인
     @GetMapping("/user/main")
-    public List<UserDealListResponse> getUserDealList(Authentication auth) {
+    public MainResponse getUserDealList(Authentication auth) {
         User user = getPrincipalUser(auth);
-        List<UserDealListResponse> userDealList = dealService.getUserDealList(user.getId());
-        return userDealList;
+        MainResponse mainResponse = dealService.getMainRes(user);
+        return mainResponse;
     }
 
     //비밀번호 변경
