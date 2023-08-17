@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @Entity
 @Data
@@ -33,4 +34,18 @@ public class Locker {
     // 락커 비밀번호 생성 시간
     private LocalDateTime createLockerPwdAt;
 
+
+    public String updatePassword(){
+        Random rnd =new Random();
+        StringBuffer buf =new StringBuffer();
+        for(int i=0;i<6;i++) {
+            if (rnd.nextBoolean()) {
+                buf.append((char) ((int) (rnd.nextInt(4)) + 65));
+            } else {
+                buf.append((rnd.nextInt(10)));
+            }
+        }
+        this.password = buf.toString();
+        return this.password;
+    }
 }

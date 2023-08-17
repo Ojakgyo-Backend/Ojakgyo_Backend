@@ -91,6 +91,13 @@ public class DealService {
         return dealDetailsResponse;
     }
 
+    public String changPassword(Long dealID) {
+        Deal deal = dealRepository.findDealById(dealID);
+        Locker locker = lockerService.findById(deal.getLocker().getId());
+        String changedPassword = locker.updatePassword();
+        lockerService.saveLocker(locker);
+        return changedPassword;
+    }
 
     public List<UserDealListResponse> getUserDealList(Long userId){
         List<Deal> dealList = dealRepository.findAllByUserId(userId);
@@ -129,6 +136,7 @@ public class DealService {
         }
         return users;
     }
+
 
 
 }
