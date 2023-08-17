@@ -63,11 +63,11 @@ public class DealController {
 
     // 거래 등록
     @PostMapping
-    public Object registerDeal(Authentication authentication,@RequestBody RegisterDealRequest request) throws IOException {
+    public Long registerDeal(Authentication authentication,@RequestBody RegisterDealRequest request) throws IOException {
         try {
             User user = getPrincipalUser(authentication);
-            dealService.createDeal(request, user);
-            return Map.of("result", "거래 등록 성공");
+            Long DealId = dealService.createDeal(request, user);
+            return DealId;
         } catch (Exception e) {
             throw e;
         }

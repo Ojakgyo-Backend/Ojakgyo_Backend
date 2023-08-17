@@ -4,11 +4,8 @@ import Ojakgyo.com.example.Ojakgyo.domain.Deal;
 import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
-import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
+import Ojakgyo.com.example.Ojakgyo.dto.*;
 import Ojakgyo.com.example.Ojakgyo.domain.DealerDealListInterface;
-import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
-import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
-import Ojakgyo.com.example.Ojakgyo.dto.UserDealListResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +22,7 @@ public class DealService {
     private final UserService userService;
     private final LockerService lockerService;
 
-    public Deal createDeal(RegisterDealRequest request, User user){
+    public Long createDeal(RegisterDealRequest request, User user){
         User users[] = isRole(user, findUser(request.getDealerId()), request.getIsSeller());
 
         Deal deal = Deal.builder()
@@ -42,7 +39,7 @@ public class DealService {
                 .buyer(users[1])
                 .locker(findLocker(request.getLockerId()))
                 .build();
-        return dealRepository.save(deal);
+        return dealRepository.save(deal).getId();
     }
 
     public SearchDealerResponse getDealerDealList(String email){
@@ -54,6 +51,7 @@ public class DealService {
         dealLists.sort(Comparator.comparing(DealerDealListInterface::getUpdateAt).reversed());
 
         SearchDealerResponse searchDealerResponse = SearchDealerResponse.builder()
+                .dealerId(dealer.getId())
                 .email(dealer.getEmail())
                 .name(dealer.getName())
                 .phone(dealer.getPhone())
@@ -100,11 +98,19 @@ public class DealService {
         return changedPassword;
     }
 
-    public List<UserDealListResponse> getUserDealList(Long userId){
+    public MainResponse getMainRes(User user){
+        MainResponse mainResponse = MainResponse.builder()
+                .user(user)
+                .userDealLists(getUserDealList(user.getId())).build();
+        return mainResponse;
+    }
+
+    private List<UserDealList> getUserDealList(Long userId){
         List<Deal> dealList = dealRepository.findAllByUserId(userId);
-        List<UserDealListResponse> userDealList = new ArrayList<>();
+        List<UserDealList> userDealList = new ArrayList<>();
         for(Deal deal : dealList){
-            UserDealListResponse userDeal = UserDealListResponse.builder()
+            UserDealList userDeal = UserDealList.builder()
+                    .dealId(deal.getId())
                     .dealStatus(deal.getDealStatus())
                     .item(deal.getItem())
                     .price(deal.getPrice())
@@ -113,7 +119,7 @@ public class DealService {
                     .createAt(deal.getCreateAt()).build();
             userDealList.add(userDeal);
         }
-        userDealList.sort(Comparator.comparing(UserDealListResponse::getCreateAt).reversed());
+        userDealList.sort(Comparator.comparing(UserDealList::getCreateAt).reversed());
         return userDealList;
     }
 

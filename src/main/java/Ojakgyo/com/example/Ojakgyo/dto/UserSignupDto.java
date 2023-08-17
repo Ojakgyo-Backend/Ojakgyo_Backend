@@ -36,4 +36,6 @@ public class UserSignupDto {
     @Size(min=11, max=11, message = "전화번호는 11개의 숫자로만 입력해주세요.")
     @NotBlank(message = "전화번호를 입력해 주세요.")
     private String phone;
+
+    private String profileIMG;
 }

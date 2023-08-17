@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Builder
 public class SearchDealerResponse {
+    private Long dealerId;
     private String email;
     private String name;
     private String phone;
