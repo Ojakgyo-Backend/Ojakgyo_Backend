@@ -5,16 +5,16 @@ import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
 import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
-import Ojakgyo.com.example.Ojakgyo.dto.DealListInterface;
+import Ojakgyo.com.example.Ojakgyo.domain.DealerDealListInterface;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
+import Ojakgyo.com.example.Ojakgyo.dto.UserDealListResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -47,11 +47,11 @@ public class DealService {
 
     public SearchDealerResponse getDealerDealList(String email){
         User dealer = userService.findByEmail(email);
-        List<DealListInterface> dealLists = new ArrayList<>();
-        dealLists.addAll(dealRepository.findBySellerId(dealer.getId()));
-        dealLists.addAll(dealRepository.findByBuyerId(dealer.getId()));
+        List<DealerDealListInterface> dealLists = new ArrayList<>();
+        dealLists.addAll(dealRepository.findDealerDealListBySellerId(dealer.getId()));
+        dealLists.addAll(dealRepository.findDealerDealListByBuyerId(dealer.getId()));
 
-        dealLists.sort(Comparator.comparing(DealListInterface::getUpdateAt));
+        dealLists.sort(Comparator.comparing(DealerDealListInterface::getUpdateAt).reversed());
 
         SearchDealerResponse searchDealerResponse = SearchDealerResponse.builder()
                 .email(dealer.getEmail())
@@ -83,6 +83,23 @@ public class DealService {
                 .dealStatus(String.valueOf(deal.getDealStatus()))
                 .build();
         return dealDetailsResponse;
+    }
+
+    public List<UserDealListResponse> getUserDealList(Long userId){
+        List<Deal> dealList = dealRepository.findAllByUserId(userId);
+        List<UserDealListResponse> userDealList = new ArrayList<>();
+        for(Deal deal : dealList){
+            UserDealListResponse userDeal = UserDealListResponse.builder()
+                    .dealStatus(deal.getDealStatus())
+                    .item(deal.getItem())
+                    .price(deal.getPrice())
+                    .sellerName(deal.getSeller().getName())
+                    .buyerName(deal.getBuyer().getName())
+                    .createAt(deal.getCreateAt()).build();
+            userDealList.add(userDeal);
+        }
+        userDealList.sort(Comparator.comparing(UserDealListResponse::getCreateAt).reversed());
+        return userDealList;
     }
 
     private Locker findLocker(Long lockerId){
