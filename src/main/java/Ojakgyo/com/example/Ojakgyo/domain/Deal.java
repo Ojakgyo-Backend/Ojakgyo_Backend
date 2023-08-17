@@ -28,7 +28,7 @@ public class Deal {
     @Column(nullable = false)
     String account;
 
-    // 입금 현황 [0,1]
+    // 입금 현황
     @Column(nullable = false)
     private Boolean depositStatus;
 

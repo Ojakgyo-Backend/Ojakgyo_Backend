@@ -61,6 +61,12 @@ public class DealService {
         return searchDealerResponse;
     }
 
+    public void checkSellerDeposit(Long dealId){
+        Deal deal = dealRepository.findDealById(dealId);
+        deal.updateDepositStatus(Boolean.TRUE);
+        dealRepository.save(deal);
+    }
+
     public DealDetailsResponse getDealDetails(Long dealId){
         Deal deal = dealRepository.findDealById(dealId);
         Locker locker = lockerService.findById(deal.getLocker().getId());
@@ -84,6 +90,7 @@ public class DealService {
                 .build();
         return dealDetailsResponse;
     }
+
 
     public List<UserDealListResponse> getUserDealList(Long userId){
         List<Deal> dealList = dealRepository.findAllByUserId(userId);
@@ -122,4 +129,6 @@ public class DealService {
         }
         return users;
     }
+
+
 }

@@ -44,9 +44,14 @@ public class DealController {
         }
     }
 
+    @GetMapping("/seller-deposit-check")
+    public Object sellerDepositCheck(Authentication authentication,@RequestParam Long dealId){
+        dealService.checkSellerDeposit(dealId);
+        return Map.of("result", "입급 확인 상태 변경 성공");
+    }
 
     @GetMapping("/deal-details")
-    public DealDetailsResponse getDeealDeatails(Authentication auth, @RequestParam Long dealId){
+    public DealDetailsResponse getDealDeatails(Authentication auth, @RequestParam Long dealId){
         return dealService.getDealDetails(dealId);
     }
 
