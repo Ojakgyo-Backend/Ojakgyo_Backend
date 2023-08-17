@@ -3,6 +3,7 @@ package Ojakgyo.com.example.Ojakgyo.controller;
 import Ojakgyo.com.example.Ojakgyo.config.auth.PrincipalDetails;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
+import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchLockerResponse;
@@ -19,10 +20,9 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/deal")
-public class RegisterDealController {
+public class DealController {
     private final DealService dealService;
     private final LockerService lockerService;
-    private final UserService userService;
 
     // 락커 id로 조회
     @GetMapping("/search-locker")
@@ -42,6 +42,12 @@ public class RegisterDealController {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+
+    @GetMapping("/deal-details")
+    public DealDetailsResponse getDeealDeatails(Authentication auth, @RequestParam Long dealId){
+        return dealService.getDealDetails(dealId);
     }
 
     // 거래 등록
