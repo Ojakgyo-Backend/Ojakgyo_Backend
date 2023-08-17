@@ -61,7 +61,7 @@ public class DealService {
         return searchDealerResponse;
     }
 
-    public void checkSellerDeposit(Long dealId){
+    public void completeBuyerDeposit(Long dealId){
         Deal deal = dealRepository.findDealById(dealId);
         deal.updateDepositStatus(Boolean.TRUE);
         dealRepository.save(deal);
