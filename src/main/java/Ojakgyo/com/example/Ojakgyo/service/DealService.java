@@ -26,7 +26,7 @@ public class DealService {
         User users[] = isRole(user, findUser(request.getDealerId()), request.getIsSeller());
 
         Deal deal = Deal.builder()
-                .dealStatus(DealStatus.DEALING)
+                .dealStatus(DealStatus.BEFORE)
                 .bank(request.getBank())
                 .account(request.getAccount())
                 .depositStatus(Boolean.FALSE)
@@ -59,44 +59,6 @@ public class DealService {
         return searchDealerResponse;
     }
 
-    public void completeBuyerDeposit(Long dealId){
-        Deal deal = dealRepository.findDealById(dealId);
-        deal.updateDepositStatus(Boolean.TRUE);
-        dealRepository.save(deal);
-    }
-
-    public DealDetailsResponse getDealDetails(Long dealId){
-        Deal deal = dealRepository.findDealById(dealId);
-        Locker locker = lockerService.findById(deal.getLocker().getId());
-        User seller = findUser(deal.getSeller().getId());
-        User buyer = findUser(deal.getBuyer().getId());
-        DealDetailsResponse dealDetailsResponse = DealDetailsResponse.builder()
-                .lockerId(locker.getId())
-                .lockerAddress(locker.getAddress())
-                .sellerName(seller.getName())
-                .sellerPhone(seller.getPhone())
-                .buyerName(buyer.getName())
-                .buyerPhone(buyer.getPhone())
-                .bank(deal.getBank())
-                .account(deal.getAccount())
-                .price(deal.getPrice())
-                .itemName(deal.getItem())
-                .condition(deal.getCondition())
-                .depositStatus(deal.getDepositStatus())
-                .lockerPassword(locker.getPassword())
-                .createLockerPwdAt(locker.getCreateLockerPwdAt())
-                .dealStatus(String.valueOf(deal.getDealStatus()))
-                .build();
-        return dealDetailsResponse;
-    }
-
-    public String changPassword(Long dealID) {
-        Deal deal = dealRepository.findDealById(dealID);
-        Locker locker = lockerService.findById(deal.getLocker().getId());
-        String changedPassword = locker.updatePassword();
-        lockerService.saveLocker(locker);
-        return changedPassword;
-    }
 
     public MainResponse getMainRes(User user){
         MainResponse mainResponse = MainResponse.builder()
@@ -104,6 +66,7 @@ public class DealService {
                 .userDealLists(getUserDealList(user.getId())).build();
         return mainResponse;
     }
+
 
     private List<UserDealList> getUserDealList(Long userId){
         List<Deal> dealList = dealRepository.findAllByUserId(userId);

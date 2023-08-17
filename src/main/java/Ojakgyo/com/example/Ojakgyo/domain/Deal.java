@@ -17,7 +17,7 @@ public class Deal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 거래 상태 [DEALING,COMPLETED,CANCELED]
+    // 거래 상태 [BEFORE,DEALING,COMPLETED,CANCELED]
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DealStatus dealStatus;
@@ -71,11 +71,13 @@ public class Deal {
 
     // 입금 현황 수정
     public void updateDepositStatus(Boolean depositStatus){
+
         this.depositStatus = depositStatus;
     }
 
     // 거래 상태 수정
     public void updateDealStatus(DealStatus dealStatus){
+
         this.dealStatus = dealStatus;
     }
 }
