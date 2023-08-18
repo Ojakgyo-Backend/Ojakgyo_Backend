@@ -36,7 +36,7 @@ public class DealDtailsController {
         return Map.of("result", "거래 중에서 거래완료로 거래 상태 변경 성공");
     }
 
-    @GetMapping("/no-contract")
+    @GetMapping("/update-deal-status")
     public Object noContract(Authentication authentication,@RequestParam Long dealId){
         dealDetailService.changeDealing(dealId);
         return Map.of("result", "거래 전에서 거래중으로 변경 성공");

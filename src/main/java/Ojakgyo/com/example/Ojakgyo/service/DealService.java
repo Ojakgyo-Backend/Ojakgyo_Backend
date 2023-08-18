@@ -86,6 +86,10 @@ public class DealService {
         return userDealList;
     }
 
+    public Deal findById(long dealId){
+        return dealRepository.findDealById(dealId);
+    }
+
     private Locker findLocker(Long lockerId){
         return lockerService.findById(lockerId);
     }
