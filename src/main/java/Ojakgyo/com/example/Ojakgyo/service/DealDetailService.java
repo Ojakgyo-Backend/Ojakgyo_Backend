@@ -1,9 +1,6 @@
 package Ojakgyo.com.example.Ojakgyo.service;
 
-import Ojakgyo.com.example.Ojakgyo.domain.Deal;
-import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
-import Ojakgyo.com.example.Ojakgyo.domain.Locker;
-import Ojakgyo.com.example.Ojakgyo.domain.User;
+import Ojakgyo.com.example.Ojakgyo.domain.*;
 import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +33,7 @@ public class DealDetailService {
         dealRepository.save(deal);
     }
 
-    public void completeBuyerDeposit(Long dealId){
+    public void completeDeposit(Long dealId){
         Deal deal = dealRepository.findDealById(dealId);
         deal.updateDepositStatus(Boolean.TRUE);
         dealRepository.save(deal);
@@ -48,7 +45,7 @@ public class DealDetailService {
         User seller = findUser(deal.getSeller().getId());
         User buyer = findUser(deal.getBuyer().getId());
         DealDetailsResponse dealDetailsResponse = DealDetailsResponse.builder()
-                .contactId(deal.getContract().getId())
+                .contactId(findContract(deal.getContract()))
                 .lockerId(locker.getId())
                 .lockerAddress(locker.getAddress())
                 .sellerName(seller.getName())
@@ -66,6 +63,17 @@ public class DealDetailService {
                 .dealStatus(String.valueOf(deal.getDealStatus()))
                 .build();
         return dealDetailsResponse;
+    }
+
+    private Long findContract(Contract contract){
+        Long contractId;
+        if(contract == null){
+            contractId = -1L;
+        }
+        else{
+            contractId = contract.getId();
+        }
+        return contractId;
     }
 
     private User findUser(Long userId){

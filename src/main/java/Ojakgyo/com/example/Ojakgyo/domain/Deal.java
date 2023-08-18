@@ -72,6 +72,10 @@ public class Deal {
      * 비지니스 로직
      * **/
 
+    //
+    public void updateContract(Contract contract){
+        this.contract = contract;
+    }
 
     // 입금 현황 수정
     public void updateDepositStatus(Boolean depositStatus){
