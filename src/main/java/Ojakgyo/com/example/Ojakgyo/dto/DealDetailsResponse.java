@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class DealDetailsResponse {
+    private Long contactId;
     private Long lockerId;
     private String lockerAddress;
     private String sellerName;
@@ -24,4 +25,5 @@ public class DealDetailsResponse {
     private String lockerPassword;
     private LocalDateTime createLockerPwdAt;
     private String dealStatus;
+
 }

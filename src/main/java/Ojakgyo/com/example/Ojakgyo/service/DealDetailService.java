@@ -48,6 +48,7 @@ public class DealDetailService {
         User seller = findUser(deal.getSeller().getId());
         User buyer = findUser(deal.getBuyer().getId());
         DealDetailsResponse dealDetailsResponse = DealDetailsResponse.builder()
+                .contactId(deal.getContract().getId())
                 .lockerId(locker.getId())
                 .lockerAddress(locker.getAddress())
                 .sellerName(seller.getName())
