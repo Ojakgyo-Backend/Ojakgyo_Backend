@@ -18,14 +18,15 @@ public class DealDtailsController {
 
     private final DealDetailService dealDetailService;
 
-    @GetMapping("/buyer-deposit-complete")
-    public Object buyerDepositComplete(Authentication authentication, @RequestParam Long dealId){
-        dealDetailService.completeBuyerDeposit(dealId);
-        return Map.of("result", "입금 전에서 완료로 상태 변경 성공");
-    }
+//    @GetMapping("/buyer-deposit-complete")
+//    public Object buyerDepositComplete(Authentication authentication, @RequestParam Long dealId){
+//        dealDetailService.completeBuyerDeposit(dealId);
+//        return Map.of("result", "입금 전에서 완료로 상태 변경 성공");
+//    }
 
     @GetMapping("/seller-deposit-check")
     public String sellerDepositCheck(Authentication authentication,@RequestParam Long dealID){
+        dealDetailService.completeDeposit(dealID);
         String changedPassword = dealDetailService.changePassword(dealID);
         return changedPassword;
     }
