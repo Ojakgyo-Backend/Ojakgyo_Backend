@@ -40,6 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .access("hasRole('ROLE_USER')")
                 .antMatchers("/deal/**")
                 .access("hasRole('ROLE_USER')")
+                .antMatchers("/contract/**")
+                .access("hasRole('ROLE_USER')")
+                .antMatchers("/deal-details/**")
+                .access("hasRole('ROLE_USER')")
                 .anyRequest().permitAll();	//다른 요청은 권한 허용
     }
 }

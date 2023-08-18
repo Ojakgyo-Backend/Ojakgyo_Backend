@@ -113,7 +113,7 @@ class DealServiceTest {
         .build();
 
         //when
-        Deal deal = dealService.createDeal(request,user);
+        Deal deal = dealService.findById(dealService.createDeal(request,user));
 
         //then
         Assertions.assertThat(user.getId()).isEqualTo(deal.getSeller().getId());

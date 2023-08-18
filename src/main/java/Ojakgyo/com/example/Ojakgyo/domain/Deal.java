@@ -64,10 +64,18 @@ public class Deal {
     private Locker locker;
 
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
+
     /**
      * 비지니스 로직
      * **/
 
+    //
+    public void updateContract(Contract contract){
+        this.contract = contract;
+    }
 
     // 입금 현황 수정
     public void updateDepositStatus(Boolean depositStatus){
