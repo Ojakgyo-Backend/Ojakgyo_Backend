@@ -64,6 +64,10 @@ public class Deal {
     private Locker locker;
 
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
+
     /**
      * 비지니스 로직
      * **/
