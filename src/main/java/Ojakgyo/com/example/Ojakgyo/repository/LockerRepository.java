@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface LockerRepository extends JpaRepository<Locker, Long> {
     Optional<Locker> findById(Long lockerId);
     List<Locker> findAll();
+
+    List<Locker> findByAddress(String address);
 }
