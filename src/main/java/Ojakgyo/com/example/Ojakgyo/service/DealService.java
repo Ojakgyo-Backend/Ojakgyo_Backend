@@ -30,7 +30,7 @@ public class DealService {
                 .bank(request.getBank())
                 .account(request.getAccount())
                 .depositStatus(Boolean.FALSE)
-                .condition(request.getCondition())
+                .itemCondition(request.getCondition())
                 .item(request.getItemName())
                 .price(request.getPrice())
                 .createAt(LocalDateTime.now())

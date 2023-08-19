@@ -56,7 +56,7 @@ public class DealDetailService {
                 .account(deal.getAccount())
                 .price(deal.getPrice())
                 .itemName(deal.getItem())
-                .condition(deal.getCondition())
+                .condition(deal.getItemCondition())
                 .depositStatus(deal.getDepositStatus())
                 .lockerPassword(locker.getPassword())
                 .createLockerPwdAt(locker.getCreateLockerPwdAt())

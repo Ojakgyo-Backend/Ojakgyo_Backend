@@ -34,7 +34,7 @@ public class Deal {
 
     // 물품 상태
     @Column(length = 300)
-    private String condition;
+    private String itemCondition;
 
     @Column(length = 300, nullable = false)
     private String item;
