@@ -1,8 +1,7 @@
 package Ojakgyo.com.example.Ojakgyo.controller;
 
-import Ojakgyo.com.example.Ojakgyo.domain.Contract;
 import Ojakgyo.com.example.Ojakgyo.dto.ContractDetailResponse;
-import Ojakgyo.com.example.Ojakgyo.dto.CreateContractRequest;
+import Ojakgyo.com.example.Ojakgyo.dto.BlockChainContract;
 import Ojakgyo.com.example.Ojakgyo.dto.SignatureRequest;
 import Ojakgyo.com.example.Ojakgyo.service.ContractService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +19,14 @@ public class ContractController {
     private final ContractService contractService;
 
     @PostMapping
-    public Object createContract(Authentication authentication,@RequestBody CreateContractRequest request) throws IOException {
+    public Object createContract(Authentication authentication,@RequestBody BlockChainContract request) throws IOException {
         contractService.createContract(request);
+        return Map.of("result", "계약서 생성 성공");
+    }
+
+    @PostMapping("/blockchain")
+    public Object saveBlock(Authentication authentication,@RequestBody BlockChainContract request) throws Exception {
+        contractService.saveBlock(request);
         return Map.of("result", "계약서 생성 성공");
     }
 
@@ -38,4 +43,10 @@ public class ContractController {
         return contractDetailResponse;
     }
 
+
+    @GetMapping("/blockchain/details")
+    public ContractDetailResponse compareContract(Authentication authentication, @RequestParam Long dealId, Long contractId) throws Exception {
+        ContractDetailResponse contractDetailResponse = contractService.compareBlock(dealId,contractId);
+        return contractDetailResponse;
+    }
 }
