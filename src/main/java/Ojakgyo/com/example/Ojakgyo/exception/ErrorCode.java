@@ -4,6 +4,8 @@ public enum ErrorCode {
 
     DUPLICATED_EMAIL(400, "이미 존재하는 E-mail입니다."),
     DUPLICATED_CONTRACT(400, "해당 거래는 이미 계약서가 존재합니다."),
+    ALTERED_REP_RES(400,"배상 및 책임이 변조되었습니다."),
+    ALTERED_NOTE(400,"기타사항이 변조되었습니다."),
     FAIL_VERIFY(400, "인증 번호가 틀렸습니다."),
     NOT_VERIFIED_PHONE(400, "인증되지 않은 번호입니다."),
     NOT_SEND_MESSAGE(400, "인증 번호가 전송되지 않았습니다."),

@@ -4,15 +4,18 @@ import Ojakgyo.com.example.Ojakgyo.domain.Deal;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.LockerStatus;
 import Ojakgyo.com.example.Ojakgyo.domain.User;
+import Ojakgyo.com.example.Ojakgyo.dto.LoginRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchDealerResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
 import Ojakgyo.com.example.Ojakgyo.repository.UserRepository;
 import org.assertj.core.api.Assertions;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -118,5 +121,18 @@ class DealServiceTest {
         //then
         Assertions.assertThat(user.getId()).isEqualTo(deal.getSeller().getId());
         Assertions.assertThat(dealer.getId()).usingRecursiveComparison().isEqualTo(deal.getBuyer().getId());
+    }
+
+    @Test
+    void Json변환() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        String json = "{\n" +
+                "    \"username\" : \"yj8200@naver.com\"\n" +
+                "}";
+        LoginRequest request = mapper.readValue(json,LoginRequest.class);
+
+        System.out.println("request.getPassword() = " + request.getPassword());
+        System.out.println("request.getUsername() = " + request.getUsername());
     }
 }
