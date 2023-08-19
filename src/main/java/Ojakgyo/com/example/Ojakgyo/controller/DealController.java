@@ -41,6 +41,18 @@ public class DealController {
         }
     }
 
+    // 락커 id로 조회
+    @GetMapping("/search-locker-address")
+    public List<SearchLockerResponse> searchLockerAddress(Authentication auth, @RequestParam String address){
+        try {
+            return lockerService.findByAddress(address);
+            // 검색한 락커 아이디가 없을 경우 에러 처리
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
     @GetMapping("/lockers")
     public List<SearchLockerResponse> getLockers(Authentication authentication){
         return lockerService.findAll();

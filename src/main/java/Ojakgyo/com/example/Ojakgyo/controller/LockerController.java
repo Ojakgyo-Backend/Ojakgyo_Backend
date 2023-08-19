@@ -26,4 +26,5 @@ public class LockerController {
         lockerService.createLocker(request.getAddress(),request.getPassword());
         return Map.of("result", "락커 생성 성공");
     }
+
 }

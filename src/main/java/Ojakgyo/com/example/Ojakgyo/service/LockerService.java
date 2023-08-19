@@ -4,6 +4,8 @@ import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.LockerStatus;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchLockerResponse;
 import Ojakgyo.com.example.Ojakgyo.dto.UserDealList;
+import Ojakgyo.com.example.Ojakgyo.exception.ErrorCode;
+import Ojakgyo.com.example.Ojakgyo.exception.NoSuchDataException;
 import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,4 +48,24 @@ public class LockerService {
     public Locker findById(Long lockerId) {
         return lockerRepository.findById(lockerId).get();
     }
+
+    public List<SearchLockerResponse> findByAddress(String address){
+        List<Locker> findLocker = lockerRepository.findByAddress(address);
+        if (findLocker == null) {
+            throw new NoSuchDataException(ErrorCode.LOCKER_NOT_EXIST);
+        }
+
+        List<SearchLockerResponse> searchLockers =  new ArrayList<>();
+        for(Locker locker : findLocker){
+            SearchLockerResponse searchLockeresponse= SearchLockerResponse.builder()
+                    .lockerId(locker.getId())
+                    .address(locker.getAddress())
+                    .build();
+            searchLockers.add(searchLockeresponse);
+        }
+
+        return searchLockers;
+    }
+
+
 }
