@@ -1,8 +1,14 @@
 package Ojakgyo.com.example.Ojakgyo.BlockChain;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
+
 import Ojakgyo.com.example.Ojakgyo.dto.BlockChainContract;
-import Ojakgyo.com.example.Ojakgyo.dto.LoginRequest;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.hyperledger.fabric.gateway.Contract;
 import org.hyperledger.fabric.gateway.Gateway;
 import org.hyperledger.fabric.gateway.Network;
 import org.hyperledger.fabric.gateway.Wallet;
@@ -12,11 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 
 @Service
 public class BlockChain {
@@ -34,13 +35,13 @@ public class BlockChain {
         Wallet wallet = Wallet.createFileSystemWallet(walletPath);
 
         // load a CCP, 이때 Paths.get 경로를 내가 그 다운받은 json 경로로 해줘야 할듯
-        Path networkConfigPath = Paths.get("download", "connection_profile.json");
+        Path networkConfigPath = Paths.get("C:\\Users\\a0107\\IdeaProjects\\Ojakgyo\\src\\main\\java\\Ojakgyo\\com\\example\\Ojakgyo\\BlockChain\\connection\\connection_profile.json");
         InputStream is = new FileInputStream(networkConfigPath.toFile());
         NetworkConfig ccp = NetworkConfig.fromJsonStream(is);
         String mspId = ccp.getClientOrganization().getMspId();
 
         // load the exported user, 똑같이 냅둬도 됨
-        Path userPath = Paths.get("download", "user.json");
+        Path userPath = Paths.get("C:\\Users\\a0107\\IdeaProjects\\Ojakgyo\\src\\main\\java\\Ojakgyo\\com\\example\\Ojakgyo\\BlockChain\\connection\\user.json");
         is = new FileInputStream(userPath.toFile());
         JsonObject userObject = (JsonObject) Json.createReader(is).read();
         String userId = userObject.getString("name");
@@ -85,13 +86,13 @@ public class BlockChain {
         Wallet wallet = Wallet.createFileSystemWallet(walletPath);
 
         // load a CCP, 이때 Paths.get 경로를 내가 그 다운받은 json 경로로 해줘야 할듯
-        Path networkConfigPath = Paths.get("download", "connection_profile.json");
+        Path networkConfigPath = Paths.get("C:\\Users\\a0107\\IdeaProjects\\Ojakgyo\\src\\main\\java\\Ojakgyo\\com\\example\\Ojakgyo\\BlockChain\\connection\\connection_profile.json");
         InputStream is = new FileInputStream(networkConfigPath.toFile());
         NetworkConfig ccp = NetworkConfig.fromJsonStream(is);
         String mspId = ccp.getClientOrganization().getMspId();
 
         // load the exported user, 똑같이 냅둬도 됨
-        Path userPath = Paths.get("download", "user.json");
+        Path userPath = Paths.get("C:\\Users\\a0107\\IdeaProjects\\Ojakgyo\\src\\main\\java\\Ojakgyo\\com\\example\\Ojakgyo\\BlockChain\\connection\\user.json");
         is = new FileInputStream(userPath.toFile());
         JsonObject userObject = (JsonObject) Json.createReader(is).read();
         String userId = userObject.getString("name");

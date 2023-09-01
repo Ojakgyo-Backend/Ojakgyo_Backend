@@ -1,13 +1,15 @@
 package Ojakgyo.com.example.Ojakgyo.service;
 
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
+import Ojakgyo.com.example.Ojakgyo.dto.SearchLockerResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
 @SpringBootTest
 class LockerServiceTest {
     @Autowired
@@ -21,9 +23,9 @@ class LockerServiceTest {
         String adress = "부산";
         Locker locker = lockerService.createLocker(adress,"1234");
         lockerRepository.save(locker);
-        Locker findLocker = lockerService.findByAddress(adress);
+        List<SearchLockerResponse> findLocker = lockerService.findByAddress(adress);
 
-        Assertions.assertThat(findLocker.getAddress()).isEqualTo(adress);
+        Assertions.assertThat(findLocker.get(0).getAddress()).isEqualTo(adress);
 
     }
 }
