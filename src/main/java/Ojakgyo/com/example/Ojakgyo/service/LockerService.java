@@ -3,7 +3,6 @@ package Ojakgyo.com.example.Ojakgyo.service;
 import Ojakgyo.com.example.Ojakgyo.domain.Locker;
 import Ojakgyo.com.example.Ojakgyo.domain.LockerStatus;
 import Ojakgyo.com.example.Ojakgyo.dto.SearchLockerResponse;
-import Ojakgyo.com.example.Ojakgyo.dto.UserDealList;
 import Ojakgyo.com.example.Ojakgyo.exception.ErrorCode;
 import Ojakgyo.com.example.Ojakgyo.exception.NoSuchDataException;
 import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
@@ -19,7 +18,7 @@ import java.util.List;
 public class LockerService {
     private final LockerRepository lockerRepository;
 
-    public Locker createLocker(String address, String password){
+    public Locker createLocker(String address, String password) {
         Locker locker = Locker.builder()
                 .lockerStatus(LockerStatus.NOT_IN_USE)
                 .address(address)
@@ -28,19 +27,19 @@ public class LockerService {
         return lockerRepository.save(locker);
     }
 
-    public List<SearchLockerResponse> findAll(){
+    public List<SearchLockerResponse> findAll() {
         List<Locker> lockerList = lockerRepository.findAll();
         List<SearchLockerResponse> lockerRes = new ArrayList<>();
-        for(Locker locker : lockerList){
+        for (Locker locker : lockerList) {
             SearchLockerResponse searchLockerResponse = SearchLockerResponse.builder()
                     .lockerId(locker.getId())
                     .address(locker.getAddress()).build();
             lockerRes.add(searchLockerResponse);
         }
-        return lockerRes ;
+        return lockerRes;
     }
 
-    public void saveLocker(Locker locker){
+    public void saveLocker(Locker locker) {
         lockerRepository.save(locker);
     }
 
@@ -49,15 +48,15 @@ public class LockerService {
         return lockerRepository.findById(lockerId).get();
     }
 
-    public List<SearchLockerResponse> findByAddress(String address){
+    public List<SearchLockerResponse> findByAddress(String address) {
         List<Locker> findLocker = lockerRepository.findByAddress(address);
         if (findLocker == null) {
             throw new NoSuchDataException(ErrorCode.LOCKER_NOT_EXIST);
         }
 
-        List<SearchLockerResponse> searchLockers =  new ArrayList<>();
-        for(Locker locker : findLocker){
-            SearchLockerResponse searchLockeresponse= SearchLockerResponse.builder()
+        List<SearchLockerResponse> searchLockers = new ArrayList<>();
+        for (Locker locker : findLocker) {
+            SearchLockerResponse searchLockeresponse = SearchLockerResponse.builder()
                     .lockerId(locker.getId())
                     .address(locker.getAddress())
                     .build();
@@ -69,3 +68,5 @@ public class LockerService {
 
 
 }
+
+

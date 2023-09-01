@@ -1,0 +1,27 @@
+{
+  "name": "ojakgyo-network",
+  "description": "Connection profile for Naver Cloud Blockchain Service. Network ID: 1352, MSP ID: orderer-msp",
+  "version": "1.0.0",
+  "client": {
+    "organization": "orderer-msp"
+  },
+  "organizations": {
+    "orderer-msp": {
+      "mspid": "orderer-msp",
+      "peers": [],
+      "certificateAuthorities": [
+        "orderer-ca-njhs6y-hlf-ca.bc-g9ndlhwk.kr.blockchain.naverncp.com:443"
+      ]
+    }
+  },
+  "certificateAuthorities": {
+    "orderer-ca-njhs6y-hlf-ca.bc-g9ndlhwk.kr.blockchain.naverncp.com:443": {
+      "url": "https://orderer-ca-njhs6y-hlf-ca.bc-g9ndlhwk.kr.blockchain.naverncp.com:443",
+      "tlsCACerts": {
+        "pem": [
+          "-----BEGIN CERTIFICATE-----\nMIID3TCCAsWgAwIBAgIUeMZBTcgBMZgP41GneOfjqXa6X50wDQYJKoZIhvcNAQEL\nBQAwejELMAkGA1UEBhMCS1IxFDASBgNVBAgMC0d5ZW9uZ2dpLWRvMRQwEgYDVQQH\nDAtTZW9uZ25hbS1zaTEZMBcGA1UECgwQTkFWRVIgQ2xvdWQgQ29ycDETMBEGA1UE\nCwwKQmxvY2tjaGFpbjEPMA0GA1UEAwwGaGxmLWNhMCAXDTIzMDgxOTE3MTU0MFoY\nDzIwNTMwODExMTcxNTQwWjB6MQswCQYDVQQGEwJLUjEUMBIGA1UECAwLR3llb25n\nZ2ktZG8xFDASBgNVBAcMC1Nlb25nbmFtLXNpMRkwFwYDVQQKDBBOQVZFUiBDbG91\nZCBDb3JwMRMwEQYDVQQLDApCbG9ja2NoYWluMQ8wDQYDVQQDDAZobGYtY2EwggEi\nMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDplo0hUcRIYQbJm5hHGIQ4B40z\nq8nbxPbBUsPUgXC66tA86EMNtu1p6sicvdJwImWLxKpHCWD3PYoKjeQpND252C+q\n5v1+SAPEU2aF0mYoKrVV+7XuvKkK+hAB3KGTpYDxhU3n8ydNJNq5jE+iBC6iHa6A\nnHEKk6yF0wVbbwR29Vo+pJPwUrUSKQEI0XuPgPba2H9w1GuJXJwGYSQ1SfaQ+CJ2\nHrVehPpXb5PVdtnWElXjW+2oEi06iI6jYIo5KnAsRwitBjcN+0CsuLz/WP3Asetm\nn9DV9aaQqxyciuJf0PmoGmsAnWVZVQDnkQCQOzXYmWLjzSvuJDeri/Cj8oMzAgMB\nAAGjWTBXMFUGA1UdEQROMEyCP29yZGVyZXItY2EtbmpoczZ5LWhsZi1jYS5iYy1n\nOW5kbGh3ay5rci5ibG9ja2NoYWluLm5hdmVybmNwLmNvbYIJbG9jYWxob3N0MA0G\nCSqGSIb3DQEBCwUAA4IBAQA8b7A5HMSglUeMPxLEAMT0WNQH0BmJpMr6V89AKSCX\njK5EGTqEw+EgsfeHlKY4qpWZvl3qPMB2zia/nOaQk7ihgTARqs/KT4CS+DYSxfoQ\nSfPZAZYtkS5FKykg7E5mhiTnnIOYSjeSo4lwkAwEYjhToSg+Q+1TMdkvtzkETNjn\nOsIUr97KXu2UglN1WA7Wb3Tz3/AVOl2UflWPoEYe3rw7XbdsnL2wu3jbi6aMkvSb\nYbfDnq9U+Dah4nrTT4+0biqu+4UiH/vid+3ar67HX01/d+gJBqLE8OYru5ViyoxW\nEWuEw1Ujw6Dmg+rIvP0C9Tp1T9gJQ7g5a8Z5uu6POlPH\n-----END CERTIFICATE-----\n"
+        ]
+      }
+    }
+  }
+}
