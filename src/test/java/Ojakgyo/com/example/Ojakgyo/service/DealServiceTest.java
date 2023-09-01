@@ -92,7 +92,7 @@ class DealServiceTest {
     }
 
     @Test
-    void 거래등록저장_테스트(){
+    void 거래등록_테스트(){
         //given
         User user = createUser("zzz", "01011112222");
         User dealer = createUser("qqq","01000011101");
