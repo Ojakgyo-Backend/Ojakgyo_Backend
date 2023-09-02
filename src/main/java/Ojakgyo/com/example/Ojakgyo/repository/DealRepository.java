@@ -12,6 +12,6 @@ public interface DealRepository extends JpaRepository<Deal,Long> {
     List<DealerDealListInterface> findDealerDealListByBuyerId(Long id);
     Deal findDealById(Long dealId);
 
-    @Query(value = "SELECT * FROM Deal d WHERE d.seller_id = :id OR d.buyer_id =:id ", nativeQuery = true)
+    @Query(value = "SELECT * FROM deal d WHERE d.seller_id = :id OR d.buyer_id =:id ", nativeQuery = true)
     List<Deal> findAllByUserId(Long id);
 }
