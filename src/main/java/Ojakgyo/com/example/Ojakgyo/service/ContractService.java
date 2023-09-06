@@ -42,12 +42,12 @@ public class ContractService {
         if(deal.getContract() != null){
             throw new NoSuchDataException(ErrorCode.DUPLICATED_CONTRACT);
         }
-        Contract contract = Ojakgyo.com.example.Ojakgyo.domain.Contract.builder()
-                .repAndRes(request.getRepAndRes())
-                .note(request.getNote())
-                .build();
-        deal.updateContract(contract);
-        dealRepository.save(deal);
+//        Contract contract = Ojakgyo.com.example.Ojakgyo.domain.Contract.builder()
+//                .repAndRes(request.getRepAndRes())
+//                .note(request.getNote())
+//                .build();
+//        deal.updateContract(contract);
+//        dealRepository.save(deal);
         blockChain.createContract(request);
 
     }
