@@ -22,7 +22,7 @@ public class DealController {
     private final LockerService lockerService;
 
     // 락커 id로 조회
-    @GetMapping("/search-locker")
+    @GetMapping(value ="/search-locker", produces = "application/json; charset=UTF-8")
     public SearchLockerResponse searchLocker(Authentication auth, @RequestParam Long lockerId){
         try {
             Locker findLocker = lockerService.findById(lockerId);
@@ -42,7 +42,7 @@ public class DealController {
     }
 
     // 락커 id로 조회
-    @GetMapping("/search-locker-address")
+    @GetMapping(value ="/search-locker-address", produces = "application/json; charset=UTF-8")
     public List<SearchLockerResponse> searchLockerAddress(Authentication auth, @RequestParam String address){
         try {
             return lockerService.findByAddress(address);
@@ -53,7 +53,7 @@ public class DealController {
     }
 
 
-    @GetMapping("/lockers")
+    @GetMapping(value ="/lockers", produces = "application/json; charset=UTF-8")
     public List<SearchLockerResponse> getLockers(Authentication authentication){
         return lockerService.findAll();
     }
@@ -71,7 +71,7 @@ public class DealController {
         }
     }
 
-    @GetMapping("/search-dealer")
+    @GetMapping(value ="/search-dealer", produces = "application/json; charset=UTF-8")
     public SearchDealerResponse searchDealer(Authentication authentication, @RequestParam String dealerEmail) throws IOException{
         try {
             System.out.println("dealerEmail = " + dealerEmail);
