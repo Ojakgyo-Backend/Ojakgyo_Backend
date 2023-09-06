@@ -21,7 +21,7 @@ public class LockerController {
 
     private final LockerService lockerService;
 
-    @PostMapping
+    @PostMapping(produces = "application/json; charset=UTF-8")
     public Object registerLocker(Authentication authentication, @RequestBody RegisterLockerRequest request) throws IOException {
         lockerService.createLocker(request.getAddress(),request.getPassword());
         return Map.of("result", "락커 생성 성공");

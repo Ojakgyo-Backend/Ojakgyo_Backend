@@ -24,7 +24,7 @@ public class ContractController {
         return Map.of("result", "계약서 생성 성공");
     }
 
-    @PostMapping("/blockchain")
+    @PostMapping(value ="/blockchain", produces = "application/json; charset=UTF-8")
     public Object saveBlock(Authentication authentication,@RequestBody BlockChainContract request) throws Exception {
         contractService.saveBlock(request);
         return Map.of("result", "계약서 생성 성공");
@@ -37,14 +37,14 @@ public class ContractController {
          return contractId;
     }
 
-    @GetMapping("/details")
+    @GetMapping(value ="/details", produces = "application/json; charset=UTF-8")
     public ContractDetailResponse getDetails(Authentication authentication, @RequestParam Long contractId){
         ContractDetailResponse contractDetailResponse = contractService.findById(contractId);
         return contractDetailResponse;
     }
 
 
-    @GetMapping("/blockchain/details")
+    @GetMapping(value ="/blockchain/details", produces = "application/json; charset=UTF-8")
     public ContractDetailResponse compareContract(Authentication authentication, @RequestParam Long dealId, Long contractId) throws Exception {
         ContractDetailResponse contractDetailResponse = contractService.compareBlock(dealId,contractId);
         return contractDetailResponse;
