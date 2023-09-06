@@ -38,7 +38,7 @@ public class UserSignupController {
         }
     }
 
-    @GetMapping("/email")
+    @GetMapping(value = "/email", produces = "application/json; charset=UTF-8")
     public Object checkEmail(@RequestParam String email) throws IOException {
         try {
             signupService.checkDuplicateEmail(email);
