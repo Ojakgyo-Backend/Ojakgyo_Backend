@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User {
     @Id
-    @Column
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -42,6 +42,9 @@ public class User {
 
     @Column()
     private LocalDateTime updateAt;
+
+    @Column
+    private String role;
 
     // 비밀번호 수정
     public void updatePassword(String password){
