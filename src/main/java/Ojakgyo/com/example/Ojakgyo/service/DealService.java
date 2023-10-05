@@ -23,7 +23,7 @@ public class DealService {
     private final LockerService lockerService;
 
     public Long createDeal(RegisterDealRequest request, User user){
-        User users[] = isRole(user, findUser(request.getDealerId()), request.getIsSeller());
+        User[] users = isRole(user, findUser(request.getDealerId()), request.getIsSeller());
 
         Deal deal = Deal.builder()
                 .dealStatus(DealStatus.BEFORE)
@@ -99,7 +99,7 @@ public class DealService {
     }
 
     private User[] isRole(User user, User dealer, boolean isSeller){
-        User users[] = new User[2];
+        User[] users = new User[2];
         if(isSeller){
             users[0] = user;
             users[1] = dealer;

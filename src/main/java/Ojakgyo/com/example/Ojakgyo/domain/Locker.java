@@ -40,7 +40,7 @@ public class Locker {
         StringBuffer buf =new StringBuffer();
         for(int i=0;i<6;i++) {
             if (rnd.nextBoolean()) {
-                buf.append((char) ((int) (rnd.nextInt(4)) + 65));
+                buf.append((char) (rnd.nextInt(4) + 65));
             } else {
                 buf.append((rnd.nextInt(10)));
             }
