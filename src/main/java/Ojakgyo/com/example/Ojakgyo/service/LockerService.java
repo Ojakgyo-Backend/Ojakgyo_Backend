@@ -67,6 +67,15 @@ public class LockerService {
     }
 
 
+    public boolean checkPassword(Long lockerId, String password) {
+        Locker locker = findById(lockerId);
+        if (password.equals(locker.getPassword())){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 }
 
 

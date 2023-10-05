@@ -1,6 +1,7 @@
 package Ojakgyo.com.example.Ojakgyo.controller;
 
 import Ojakgyo.com.example.Ojakgyo.domain.User;
+import Ojakgyo.com.example.Ojakgyo.dto.CheckLockerRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterDealRequest;
 import Ojakgyo.com.example.Ojakgyo.dto.RegisterLockerRequest;
 import Ojakgyo.com.example.Ojakgyo.service.LockerService;
@@ -27,4 +28,8 @@ public class LockerController {
         return Map.of("result", "락커 생성 성공");
     }
 
+    @PostMapping(value ="/check-password",produces = "application/json; charset=UTF-8")
+    public boolean checkPassword(@RequestBody CheckLockerRequest request) throws IOException {
+        return lockerService.checkPassword(request.getLockerId(),request.getPassword());
+    }
 }
