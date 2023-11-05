@@ -24,11 +24,16 @@ public class DealDtailsController {
 //        return Map.of("result", "입금 전에서 완료로 상태 변경 성공");
 //    }
 
+    @GetMapping(value ="/buyer-deposit-complete", produces = "application/json; charset=UTF-8")
+    public Object buyerDepositComplete(Authentication authentication,@RequestParam Long dealId){
+        dealDetailService.buyerCompleteDeposit(dealId);
+        return dealDetailService.changePassword(dealId);
+    }
+
     @GetMapping(value ="/seller-deposit-check", produces = "application/json; charset=UTF-8")
-    public String sellerDepositCheck(Authentication authentication,@RequestParam Long dealID){
-        dealDetailService.completeDeposit(dealID);
-        String changedPassword = dealDetailService.changePassword(dealID);
-        return changedPassword;
+    public Object sellerDepositCheck(Authentication authentication,@RequestParam Long dealId){
+        dealDetailService.sellerCheckDeposit(dealId);
+        return Map.of("result", "입금 확인 상태 변경 성공");
     }
 
     @GetMapping(value ="/buyer-deal-complete", produces = "application/json; charset=UTF-8")

@@ -29,7 +29,8 @@ public class Deal {
     String account;
 
     // 입금 현황 [BUYER_DEPOSIT_BEFORE, BUYER_DEPOSIT_COMPLETE, SELLER_DEPOSIT_CHECK]
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
     private DepositStatus depositStatus;
 
     // 물품 상태
@@ -84,7 +85,6 @@ public class Deal {
 
     // 거래 상태 수정
     public void updateDealStatus(DealStatus dealStatus){
-
         this.dealStatus = dealStatus;
     }
 }

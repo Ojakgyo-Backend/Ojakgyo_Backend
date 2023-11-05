@@ -1,11 +1,7 @@
 package Ojakgyo.com.example.Ojakgyo.service;
 
-import Ojakgyo.com.example.Ojakgyo.domain.Deal;
-import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
-import Ojakgyo.com.example.Ojakgyo.domain.Locker;
-import Ojakgyo.com.example.Ojakgyo.domain.User;
+import Ojakgyo.com.example.Ojakgyo.domain.*;
 import Ojakgyo.com.example.Ojakgyo.dto.*;
-import Ojakgyo.com.example.Ojakgyo.domain.DealerDealListInterface;
 import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +25,7 @@ public class DealService {
                 .dealStatus(DealStatus.BEFORE)
                 .bank(request.getBank())
                 .account(request.getAccount())
-                .depositStatus(Boolean.FALSE)
+                .depositStatus(DepositStatus.BUYER_DEPOSIT_BEFORE)
                 .itemCondition(request.getCondition())
                 .item(request.getItemName())
                 .price(request.getPrice())
@@ -50,21 +46,19 @@ public class DealService {
 
         dealLists.sort(Comparator.comparing(DealerDealListInterface::getUpdateAt).reversed());
 
-        SearchDealerResponse searchDealerResponse = SearchDealerResponse.builder()
+        return SearchDealerResponse.builder()
                 .dealerId(dealer.getId())
                 .email(dealer.getEmail())
                 .name(dealer.getName())
                 .phone(dealer.getPhone())
                 .dealLists(dealLists).build();
-        return searchDealerResponse;
     }
 
 
     public MainResponse getMainRes(User user){
-        MainResponse mainResponse = MainResponse.builder()
+        return MainResponse.builder()
                 .user(user)
                 .userDealLists(getUserDealList(user.getId())).build();
-        return mainResponse;
     }
 
 
