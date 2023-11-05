@@ -1,6 +1,5 @@
 package Ojakgyo.com.example.Ojakgyo.dto;
 
-import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,7 +20,7 @@ public class DealDetailsResponse {
     private Long price;
     private String itemName;
     private String condition;
-    private Boolean depositStatus;
+    private String depositStatus;
     private String lockerPassword;
     private LocalDateTime createLockerPwdAt;
     private String dealStatus;

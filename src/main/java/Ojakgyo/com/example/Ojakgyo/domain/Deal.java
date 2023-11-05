@@ -28,9 +28,10 @@ public class Deal {
     @Column(nullable = false)
     String account;
 
-    // 입금 현황
-    @Column(nullable = false)
-    private Boolean depositStatus;
+    // 입금 현황 [BUYER_DEPOSIT_BEFORE, BUYER_DEPOSIT_COMPLETE, SELLER_DEPOSIT_CHECK]
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private DepositStatus depositStatus;
 
     // 물품 상태
     @Column(length = 300)
@@ -78,14 +79,12 @@ public class Deal {
     }
 
     // 입금 현황 수정
-    public void updateDepositStatus(Boolean depositStatus){
-
+    public void updateDepositStatus(DepositStatus depositStatus){
         this.depositStatus = depositStatus;
     }
 
     // 거래 상태 수정
     public void updateDealStatus(DealStatus dealStatus){
-
         this.dealStatus = dealStatus;
     }
 }

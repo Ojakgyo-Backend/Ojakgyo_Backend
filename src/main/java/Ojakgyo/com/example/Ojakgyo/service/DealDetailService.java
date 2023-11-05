@@ -33,9 +33,15 @@ public class DealDetailService {
         dealRepository.save(deal);
     }
 
-    public void completeDeposit(Long dealId){
+    public void buyerCompleteDeposit(Long dealId){
         Deal deal = dealRepository.findDealById(dealId);
-        deal.updateDepositStatus(Boolean.TRUE);
+        deal.updateDepositStatus(DepositStatus.BUYER_DEPOSIT_COMPLETE);
+        dealRepository.save(deal);
+    }
+
+    public void sellerCheckDeposit(Long dealId) {
+        Deal deal = dealRepository.findDealById(dealId);
+        deal.updateDepositStatus(DepositStatus.SELLER_DEPOSIT_CHECK);
         dealRepository.save(deal);
     }
 
@@ -44,7 +50,7 @@ public class DealDetailService {
         Locker locker = lockerService.findById(deal.getLocker().getId());
         User seller = findUser(deal.getSeller().getId());
         User buyer = findUser(deal.getBuyer().getId());
-        DealDetailsResponse dealDetailsResponse = DealDetailsResponse.builder()
+        return DealDetailsResponse.builder()
                 .contactId(findContract(deal.getContract()))
                 .lockerId(locker.getId())
                 .lockerAddress(locker.getAddress())
@@ -57,12 +63,11 @@ public class DealDetailService {
                 .price(deal.getPrice())
                 .itemName(deal.getItem())
                 .condition(deal.getItemCondition())
-                .depositStatus(deal.getDepositStatus())
+                .depositStatus(String.valueOf(deal.getDepositStatus()))
                 .lockerPassword(locker.getPassword())
                 .createLockerPwdAt(locker.getCreateLockerPwdAt())
                 .dealStatus(String.valueOf(deal.getDealStatus()))
                 .build();
-        return dealDetailsResponse;
     }
 
     private Long findContract(Contract contract){
@@ -79,6 +84,7 @@ public class DealDetailService {
     private User findUser(Long userId){
         return userService.findById(userId);
     }
+
 
 
 }
