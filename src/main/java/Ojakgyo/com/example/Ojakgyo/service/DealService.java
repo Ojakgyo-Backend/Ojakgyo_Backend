@@ -6,11 +6,15 @@ import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import static Ojakgyo.com.example.Ojakgyo.domain.Utils.changeDateFormat;
 
 @Service
 @RequiredArgsConstructor
@@ -57,14 +61,25 @@ public class DealService {
         dealLists.addAll(dealRepository.findDealerDealListBySellerId(dealer.getId()));
         dealLists.addAll(dealRepository.findDealerDealListByBuyerId(dealer.getId()));
 
-        dealLists.sort(Comparator.comparing(DealerDealListInterface::getUpdateAt).reversed());
+        //날짜 순으로 정렬
+        dealLists.sort(Comparator.comparing((DealerDealListInterface dealerDealListInterface) -> dealerDealListInterface.getUpdateAt()).reversed());
+
+        List<DealerDealList> dealerDealLists = new ArrayList<>();
+        for (DealerDealListInterface dealListInterface : dealLists) {
+            DealerDealList dealerDealList = DealerDealList.builder()
+                    .item(dealListInterface.getItem())
+                    .dealStatus(dealListInterface.getDealStatus())
+                    .updateAt(changeDateFormat(dealListInterface.getUpdateAt()))
+                    .build();
+            dealerDealLists.add(dealerDealList);
+        }
 
         return SearchDealerResponse.builder()
                 .dealerId(dealer.getId())
                 .email(dealer.getEmail())
                 .name(dealer.getName())
                 .phone(dealer.getPhone())
-                .dealLists(dealLists).build();
+                .dealLists(dealerDealLists).build();
     }
 
 
@@ -86,7 +101,7 @@ public class DealService {
                     .price(deal.getPrice())
                     .sellerName(deal.getSeller().getName())
                     .buyerName(deal.getBuyer().getName())
-                    .createAt(deal.getCreateAt()).build();
+                    .createAt(changeDateFormat(deal.getCreateAt())).build();
             userDealList.add(userDeal);
         }
         userDealList.sort(Comparator.comparing(UserDealList::getCreateAt).reversed());
@@ -117,7 +132,6 @@ public class DealService {
         }
         return users;
     }
-
 
 
 }

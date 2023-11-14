@@ -6,6 +6,8 @@ import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static Ojakgyo.com.example.Ojakgyo.domain.Utils.changeDateFormat;
+
 @Service
 @RequiredArgsConstructor
 public class DealDetailService {
@@ -65,7 +67,7 @@ public class DealDetailService {
                 .condition(deal.getItemCondition())
                 .depositStatus(String.valueOf(deal.getDepositStatus()))
                 .lockerPassword(locker.getPassword())
-                .createLockerPwdAt(locker.getCreateLockerPwdAt())
+                .createLockerPwdAt(changeDateFormat(locker.getCreateLockerPwdAt()))
                 .dealStatus(String.valueOf(deal.getDealStatus()))
                 .build();
     }

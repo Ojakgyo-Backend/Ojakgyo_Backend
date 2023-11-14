@@ -13,5 +13,5 @@ public class SearchDealerResponse {
     private String email;
     private String name;
     private String phone;
-    private List<DealerDealListInterface> dealLists;
+    private List<DealerDealList> dealLists;
 }

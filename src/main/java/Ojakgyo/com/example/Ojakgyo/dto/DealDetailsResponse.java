@@ -22,7 +22,7 @@ public class DealDetailsResponse {
     private String condition;
     private String depositStatus;
     private String lockerPassword;
-    private LocalDateTime createLockerPwdAt;
+    private String createLockerPwdAt;
     private String dealStatus;
 
 }
