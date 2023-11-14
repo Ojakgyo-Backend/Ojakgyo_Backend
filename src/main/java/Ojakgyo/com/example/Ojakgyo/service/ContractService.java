@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,21 @@ public class ContractService {
                 .build();
         deal.updateContract(contract);
         dealRepository.save(deal);
+    }
+
+    public void deleteContract(long dealId){
+        if (isPresentContract(dealId)){
+            contractRepository.deleteById(dealService.findById(dealId).getContract().getId());
+        }
+    }
+
+    private boolean isPresentContract(long dealId) {
+        Optional<Contract> contract = Optional.ofNullable(dealService.findById(dealId).getContract());
+        if (!contract.isPresent()) {
+            return false;
+        }
+
+        return true;
     }
 
     public void saveBlock(BlockChainContract request) throws Exception {
@@ -61,12 +77,11 @@ public class ContractService {
     public ContractDetailResponse findById(Long contractId) {
         Contract contract = contractRepository.findById(contractId).get();
 
-        ContractDetailResponse contractDetailResponse = ContractDetailResponse.builder()
+        return ContractDetailResponse.builder()
                 .repAndRes(contract.getRepAndRes())
                 .note(contract.getNote())
                 .buyerSignature(contract.getBuyerSignature())
                 .sellerSignature(contract.getSellerSignature()).build();
-        return contractDetailResponse;
     }
 
     public ContractDetailResponse compareBlock(Long dealId , Long contractId) throws Exception {
@@ -80,11 +95,10 @@ public class ContractService {
             throw new NoSuchDataException(ErrorCode.ALTERED_NOTE);
         }
 
-        ContractDetailResponse contractDetailResponse = ContractDetailResponse.builder()
+        return ContractDetailResponse.builder()
                 .repAndRes(contract.getRepAndRes())
                 .note(contract.getNote())
                 .buyerSignature(contract.getBuyerSignature())
                 .sellerSignature(contract.getSellerSignature()).build();
-        return contractDetailResponse;
     }
 }

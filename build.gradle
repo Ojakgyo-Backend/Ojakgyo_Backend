@@ -52,12 +52,12 @@ dependencies {
 	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
 
 	//blockchain
-	implementation 'org.hyperledger.fabric:fabric-gateway-java:1.4.5'
+	implementation 'org.hyperledger.fabric:fabric-gateway-java:1.4.1'
 //	implementation 'org.hyperledger.fabric:fabric-gateway-java:2.1.1'
 	implementation 'com.google.guava:guava:29.0-jre'
-	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.20.Final'
-	runtimeOnly 'io.netty:netty-tcnative:2.0.20.Final:' + tcnative_classifier
-	runtimeOnly 'io.grpc:grpc-netty-shaded:1.56.0'
+	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.47.Final'
+//	runtimeOnly 'io.netty:netty-tcnative:2.0.10.Final:' + tcnative_classifier
+	runtimeOnly 'io.grpc:grpc-netty-shaded:1.45.0'
 
 }
 

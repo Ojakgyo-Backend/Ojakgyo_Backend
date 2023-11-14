@@ -39,13 +39,12 @@ public class BlockChain {
         Path walletPath = Paths.get("wallet");
         Wallet wallet = Wallet.createFileSystemWallet(walletPath);
         // load a CCP
-        Path networkConfigPath = Paths.get("C:\\Users\\a0107\\IdeaProjects\\Ojakgyo\\src\\main\\resources\\connection\\connection_property_organization-msp.json");
+        Path networkConfigPath = Paths.get("C:\\Users\\a0107\\IdeaProjects\\Ojakgyo\\src\\main\\resources\\connection\\organization-msp.json");
         InputStream is = new FileInputStream(networkConfigPath.toFile());
         NetworkConfig ccp = NetworkConfig.fromJsonStream(is);
         String mspId = ccp.getClientOrganization().getMspId();
 
         // load the exported user
-        // load the exported user, 똑같이 냅둬도 됨
         Path userPath = Paths.get("C:\\Users\\a0107\\IdeaProjects\\Ojakgyo\\src\\main\\resources\\connection\\ca-user.json");
         is = new FileInputStream(userPath.toFile());
         JsonObject userObject = (JsonObject) Json.createReader(is).read();

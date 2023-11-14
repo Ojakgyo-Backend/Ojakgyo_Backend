@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,38 +21,7 @@ import java.util.List;
 public class DealController {
     private final DealService dealService;
     private final LockerService lockerService;
-
-    // 락커 id로 조회
-    @GetMapping(value ="/search-locker", produces = "application/json; charset=UTF-8")
-    public SearchLockerResponse searchLocker(Authentication auth, @RequestParam Long lockerId){
-        try {
-            Locker findLocker = lockerService.findById(lockerId);
-            // 검색한 락커 아이디가 없을 경우 에러 처리
-            if (findLocker == null) {
-                throw new NoSuchDataException(ErrorCode.LOCKER_NOT_EXIST);
-            }
-            SearchLockerResponse searchLockeresponse= SearchLockerResponse.builder()
-                    .lockerId(lockerId)
-                    .address(findLocker.getAddress())
-                    .build();
-
-            return searchLockeresponse;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    // 락커 id로 조회
-    @GetMapping(value ="/search-locker-address", produces = "application/json; charset=UTF-8")
-    public List<SearchLockerResponse> searchLockerAddress(Authentication auth, @RequestParam String address){
-        try {
-            return lockerService.findByAddress(address);
-            // 검색한 락커 아이디가 없을 경우 에러 처리
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
+    private final ContractService contractService;
 
     @GetMapping(value ="/lockers", produces = "application/json; charset=UTF-8")
     public List<SearchLockerResponse> getLockers(Authentication authentication){
@@ -69,6 +39,14 @@ public class DealController {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    //거래 파기
+    @DeleteMapping("/delete")
+    public Object deleteUser(Authentication authentication, @RequestParam long dealId) throws IOException {
+        contractService.deleteContract(dealId);
+        dealService.deleteDeal(dealId);
+        return Map.of("result", "거래 파기 성공");
     }
 
     @GetMapping(value ="/search-dealer", produces = "application/json; charset=UTF-8")
@@ -91,5 +69,6 @@ public class DealController {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         return principal.getUser();
     }
+
 
 }
