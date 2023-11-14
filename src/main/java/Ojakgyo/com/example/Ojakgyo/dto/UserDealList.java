@@ -15,5 +15,5 @@ public class UserDealList {
     private Long price;
     private String sellerName;
     private String buyerName;
-    private LocalDateTime createAt;
+    private String createAt;
 }
