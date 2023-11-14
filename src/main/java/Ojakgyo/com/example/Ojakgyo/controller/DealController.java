@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ import java.util.List;
 public class DealController {
     private final DealService dealService;
     private final LockerService lockerService;
+    private final ContractService contractService;
 
     @GetMapping(value ="/lockers", produces = "application/json; charset=UTF-8")
     public List<SearchLockerResponse> getLockers(Authentication authentication){
@@ -37,6 +39,14 @@ public class DealController {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    //거래 파기
+    @DeleteMapping("/delete")
+    public Object deleteUser(Authentication authentication, @RequestParam long dealId) throws IOException {
+        contractService.deleteContract(dealId);
+        dealService.deleteDeal(dealId);
+        return Map.of("result", "거래 파기 성공");
     }
 
     @GetMapping(value ="/search-dealer", produces = "application/json; charset=UTF-8")
@@ -59,5 +69,6 @@ public class DealController {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         return principal.getUser();
     }
+
 
 }

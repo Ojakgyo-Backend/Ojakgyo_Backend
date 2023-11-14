@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,18 @@ public class DealService {
                 .locker(findLocker(request.getLockerId()))
                 .build();
         return dealRepository.save(deal).getId();
+    }
+
+    public void deleteDeal(long id){
+        validateDealId(id);
+        dealRepository.deleteById(id);
+    }
+
+    private void validateDealId(long dealId) {
+        Optional<Deal> deal = dealRepository.findById(dealId);
+        if (!deal.isPresent()) {
+            throw new IllegalArgumentException("존재하지 않는 dealId");
+        }
     }
 
     public SearchDealerResponse getDealerDealList(String email){
