@@ -27,7 +27,7 @@ public class DealService {
         User[] users = isRole(user, findUser(request.getDealerId()), request.getIsSeller());
 
         Deal deal = Deal.builder()
-                .dealStatus(DealStatus.BEFORE)
+                .dealStatus(NeedNotContract(request.getPrice()) ? DealStatus.DEALING : DealStatus.BEFORE)
                 .bank(request.getBank())
                 .account(request.getAccount())
                 .depositStatus(DepositStatus.BUYER_DEPOSIT_BEFORE)
@@ -41,6 +41,14 @@ public class DealService {
                 .locker(findLocker(request.getLockerId()))
                 .build();
         return dealRepository.save(deal).getId();
+    }
+
+    private boolean NeedNotContract(long price){
+        if (price < 50000) {
+            return true;
+        }
+
+        return false;
     }
 
     public void deleteDeal(long id){
