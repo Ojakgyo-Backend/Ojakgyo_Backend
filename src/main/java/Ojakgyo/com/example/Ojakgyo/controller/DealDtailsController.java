@@ -49,7 +49,7 @@ public class DealDtailsController {
     }
 
     @GetMapping
-    public DealDetailsResponse getDealDeatails(Authentication auth, @RequestParam Long dealId){
+    public DealDetailsResponse getDealDetails(Authentication auth, @RequestParam Long dealId){
         return dealDetailService.getDealDetails(dealId);
     }
 
