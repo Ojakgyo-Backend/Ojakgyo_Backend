@@ -68,6 +68,7 @@ public class DealDetailService {
                 .depositStatus(String.valueOf(deal.getDepositStatus()))
                 .lockerPassword(locker.getPassword())
                 .createLockerPwdAt(changeDateFormat(locker.getCreateLockerPwdAt()))
+                .createAtDeal(changeDateFormat(deal.getCreateAt()))
                 .dealStatus(String.valueOf(deal.getDealStatus()))
                 .build();
     }

@@ -23,6 +23,7 @@ public class DealDetailsResponse {
     private String depositStatus;
     private String lockerPassword;
     private String createLockerPwdAt;
+    private String createAtDeal;
     private String dealStatus;
 
 }
