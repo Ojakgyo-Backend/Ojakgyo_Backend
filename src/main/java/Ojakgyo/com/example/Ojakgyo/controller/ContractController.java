@@ -24,12 +24,6 @@ public class ContractController {
         return Map.of("result", "계약서 생성 성공");
     }
 
-    @PostMapping(value ="/blockchain", produces = "application/json; charset=UTF-8")
-    public Object saveBlock(Authentication authentication,@RequestBody BlockChainContract request) throws Exception {
-        contractService.saveBlock(request);
-        return Map.of("result", "계약서 생성 성공");
-    }
-
     /** 사용자 서명 받기 */
     @PostMapping("/signature")
     public Long saveSignature(Authentication authentication, @RequestBody SignatureRequest request){
@@ -43,10 +37,24 @@ public class ContractController {
         return contractDetailResponse;
     }
 
-
-    @GetMapping(value ="/blockchain/details", produces = "application/json; charset=UTF-8")
-    public ContractDetailResponse compareContract(Authentication authentication, @RequestParam Long dealId, Long contractId) throws Exception {
-        ContractDetailResponse contractDetailResponse = contractService.compareBlock(dealId,contractId);
-        return contractDetailResponse;
+    @GetMapping(value = "/block-test", produces = "application/json; charset=UTF-8")
+    public BlockChainContract testBlock(@RequestParam Long dealId) throws Exception {
+        return contractService.testBlock(dealId);
     }
+
+    /**
+     * 아래는 api 불러오기 성공하면 수정
+     */
+//    @PostMapping(value ="/blockchain", produces = "application/json; charset=UTF-8")
+//    public Object saveBlock(Authentication authentication,@RequestBody BlockChainContract request) throws Exception {
+//        contractService.saveBlock(request);
+//        return Map.of("result", "계약서 생성 성공");
+//    }
+//
+//
+//    @GetMapping(value ="/blockchain/details", produces = "application/json; charset=UTF-8")
+//    public ContractDetailResponse compareContract(Authentication authentication, @RequestParam Long dealId, Long contractId) throws Exception {
+//        ContractDetailResponse contractDetailResponse = contractService.compareBlock(dealId,contractId);
+//        return contractDetailResponse;
+//    }
 }

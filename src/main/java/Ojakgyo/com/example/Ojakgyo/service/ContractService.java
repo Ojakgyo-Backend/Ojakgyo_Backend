@@ -1,6 +1,6 @@
 package Ojakgyo.com.example.Ojakgyo.service;
 
-import Ojakgyo.com.example.Ojakgyo.BlockChain.BlockChain;
+import Ojakgyo.com.example.Ojakgyo.BlockChain.RequestBlockChain;
 import Ojakgyo.com.example.Ojakgyo.domain.Contract;
 import Ojakgyo.com.example.Ojakgyo.domain.Deal;
 import Ojakgyo.com.example.Ojakgyo.dto.ContractDetailResponse;
@@ -23,7 +23,7 @@ public class ContractService {
     private final ContractRepository contractRepository;
     private final DealService dealService;
     private final DealRepository dealRepository;
-    private final BlockChain blockChain;
+    private final RequestBlockChain requestBlockChain;
 
     public void createContract(BlockChainContract request) throws IOException {
         Deal deal = dealService.findById(request.getDealId());
@@ -53,20 +53,6 @@ public class ContractService {
         return true;
     }
 
-    public void saveBlock(BlockChainContract request) throws Exception {
-        Deal deal = dealService.findById(request.getDealId());
-        if(deal.getContract() != null){
-            throw new NoSuchDataException(ErrorCode.DUPLICATED_CONTRACT);
-        }
-//        Contract contract = Ojakgyo.com.example.Ojakgyo.domain.Contract.builder()
-//                .repAndRes(request.getRepAndRes())
-//                .note(request.getNote())
-//                .build();
-//        deal.updateContract(contract);
-//        dealRepository.save(deal);
-        blockChain.createContract(request);
-
-    }
 
     public Long saveSignature(SignatureRequest request) {
         Contract contract = contractRepository.findById(request.getContractId()).get();
@@ -84,21 +70,43 @@ public class ContractService {
                 .sellerSignature(contract.getSellerSignature()).build();
     }
 
-    public ContractDetailResponse compareBlock(Long dealId , Long contractId) throws Exception {
-        Contract contract = contractRepository.findById(contractId).get();
-        BlockChainContract blockChainContract = blockChain.getContract(dealId);
-
-        /** 변조 비교 */
-        if(contract.getRepAndRes().equals(blockChainContract.getRepAndRes())){
-            throw new NoSuchDataException(ErrorCode.ALTERED_REP_RES);
-        } else if (contract.getNote().equals(blockChainContract.getNote())) {
-            throw new NoSuchDataException(ErrorCode.ALTERED_NOTE);
-        }
-
-        return ContractDetailResponse.builder()
-                .repAndRes(contract.getRepAndRes())
-                .note(contract.getNote())
-                .buyerSignature(contract.getBuyerSignature())
-                .sellerSignature(contract.getSellerSignature()).build();
+    public BlockChainContract testBlock(long dealId) throws Exception {
+        return requestBlockChain.requestBlock(dealId);
     }
+
+    /**
+     * 아래는 api 불러오기 성공하면 수정
+     */
+//    public void saveBlock(BlockChainContract request) throws Exception {
+//        Deal deal = dealService.findById(request.getDealId());
+//        if(deal.getContract() != null){
+//            throw new NoSuchDataException(ErrorCode.DUPLICATED_CONTRACT);
+//        }
+////        Contract contract = Ojakgyo.com.example.Ojakgyo.domain.Contract.builder()
+////                .repAndRes(request.getRepAndRes())
+////                .note(request.getNote())
+////                .build();
+////        deal.updateContract(contract);
+////        dealRepository.save(deal);
+//        blockChain.createContract(request);
+//
+//    }
+//
+//    public ContractDetailResponse compareBlock(Long dealId , Long contractId) throws Exception {
+//        Contract contract = contractRepository.findById(contractId).get();
+//        BlockChainContract blockChainContract = blockChain.getContract(dealId);
+//
+//        /** 변조 비교 */
+//        if(contract.getRepAndRes().equals(blockChainContract.getRepAndRes())){
+//            throw new NoSuchDataException(ErrorCode.ALTERED_REP_RES);
+//        } else if (contract.getNote().equals(blockChainContract.getNote())) {
+//            throw new NoSuchDataException(ErrorCode.ALTERED_NOTE);
+//        }
+//
+//        return ContractDetailResponse.builder()
+//                .repAndRes(contract.getRepAndRes())
+//                .note(contract.getNote())
+//                .buyerSignature(contract.getBuyerSignature())
+//                .sellerSignature(contract.getSellerSignature()).build();
+//    }
 }
