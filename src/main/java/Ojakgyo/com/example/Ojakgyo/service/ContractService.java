@@ -3,6 +3,7 @@ package Ojakgyo.com.example.Ojakgyo.service;
 import Ojakgyo.com.example.Ojakgyo.BlockChain.RequestBlockChain;
 import Ojakgyo.com.example.Ojakgyo.domain.Contract;
 import Ojakgyo.com.example.Ojakgyo.domain.Deal;
+import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 import Ojakgyo.com.example.Ojakgyo.dto.ContractDetailResponse;
 import Ojakgyo.com.example.Ojakgyo.dto.BlockChainContract;
 import Ojakgyo.com.example.Ojakgyo.dto.SignatureRequest;
@@ -60,6 +61,15 @@ public class ContractService {
 
         final LocalDateTime current = LocalDateTime.now();
         contract.setSignatureCreatAt(request.getIsSeller(), current);
+
+        // 내가 구매자라면 구매자가 아닌 판매자(상대방)의 서명이 저장되어 있는지 확인
+        if (contract.isDealerSignatureSaved(!request.getIsSeller())) {
+            Deal deal = contract.getDeal();
+            deal.updateDealStatus(DealStatus.DEALING);
+            dealRepository.save(deal);
+        }
+
+        contractRepository.save(contract);
         return changeDateFormat(current);
     }
 

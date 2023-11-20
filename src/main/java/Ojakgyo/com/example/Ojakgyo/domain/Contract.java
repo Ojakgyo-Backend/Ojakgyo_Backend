@@ -63,6 +63,13 @@ public class Contract {
         }
     }
 
-
+    public boolean isDealerSignatureSaved(final boolean isSeller) {
+        if(isSeller){
+            return sellerSignatureCreateAt != null;
+        }
+        else{
+            return buyerSignatureCreateAt != null;
+        }
+    }
 
 }
