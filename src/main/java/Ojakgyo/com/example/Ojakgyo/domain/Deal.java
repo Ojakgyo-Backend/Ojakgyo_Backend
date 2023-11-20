@@ -66,7 +66,7 @@ public class Deal {
 
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id")
+    @JoinColumn(name = "contract_id", unique = true)
     private Contract contract;
 
     /**
