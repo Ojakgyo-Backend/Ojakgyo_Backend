@@ -14,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static Ojakgyo.com.example.Ojakgyo.domain.Utils.changeDateFormat;
 
 @Service
 @RequiredArgsConstructor
@@ -47,18 +50,17 @@ public class ContractService {
 
     private boolean isPresentContract(long dealId) {
         Optional<Contract> contract = Optional.ofNullable(dealService.findById(dealId).getContract());
-        if (!contract.isPresent()) {
-            return false;
-        }
-
-        return true;
+        return contract.isPresent();
     }
 
 
-    public Long saveSignature(SignatureRequest request) {
+    public String saveSignature(SignatureRequest request) {
         Contract contract = contractRepository.findById(request.getContractId()).get();
         contract.setSignature(request.getIsSeller(), request.getSignature());
-        return contractRepository.save(contract).getId();
+
+        final LocalDateTime current = LocalDateTime.now();
+        contract.setSignatureCreatAt(request.getIsSeller(), current);
+        return changeDateFormat(current);
     }
 
     public ContractDetailResponse findById(Long contractId) {
