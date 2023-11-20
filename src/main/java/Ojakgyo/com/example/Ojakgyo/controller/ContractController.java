@@ -19,9 +19,9 @@ public class ContractController {
     private final ContractService contractService;
 
     @PostMapping
-    public Object createContract(Authentication authentication,@RequestBody BlockChainContract request) throws IOException {
-        contractService.createContract(request);
-        return Map.of("result", "계약서 생성 성공");
+    public Long createContract(Authentication authentication,@RequestBody BlockChainContract request) throws IOException {
+        Long contractId = contractService.createContract(request);
+        return contractId;
     }
 
     /** 사용자 서명 받기 */

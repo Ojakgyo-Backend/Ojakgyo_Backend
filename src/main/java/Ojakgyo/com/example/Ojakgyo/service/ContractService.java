@@ -29,7 +29,7 @@ public class ContractService {
     private final DealRepository dealRepository;
     private final RequestBlockChain requestBlockChain;
 
-    public void createContract(BlockChainContract request) throws IOException {
+    public Long createContract(BlockChainContract request) throws IOException {
         Deal deal = dealService.findById(request.getDealId());
         if(deal.getContract() != null){
             throw new NoSuchDataException(ErrorCode.DUPLICATED_CONTRACT);
@@ -39,8 +39,8 @@ public class ContractService {
                 .note(request.getNote())
                 .build();
         deal.updateContract(contract);
-        contractRepository.save(contract);
         dealRepository.save(deal);
+        return contractRepository.save(contract).getId();
     }
 
     public void deleteContract(long dealId){
