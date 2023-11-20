@@ -35,6 +35,7 @@ public class ContractService {
                 .note(request.getNote())
                 .build();
         deal.updateContract(contract);
+        contractRepository.save(contract);
         dealRepository.save(deal);
     }
 
