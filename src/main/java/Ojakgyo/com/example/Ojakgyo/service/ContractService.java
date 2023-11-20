@@ -80,7 +80,10 @@ public class ContractService {
                 .repAndRes(contract.getRepAndRes())
                 .note(contract.getNote())
                 .buyerSignature(contract.getBuyerSignature())
-                .sellerSignature(contract.getSellerSignature()).build();
+                .sellerSignature(contract.getSellerSignature())
+                .buyerSignatureCreatAt(changeDateFormat(contract.getBuyerSignatureCreateAt()))
+                .sellerSignatureCreatAt(changeDateFormat(contract.getSellerSignatureCreateAt()))
+                .build();
     }
 
     public BlockChainContract testBlock(long dealId) throws Exception {
