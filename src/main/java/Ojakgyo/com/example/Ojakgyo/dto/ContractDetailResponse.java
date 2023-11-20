@@ -13,4 +13,6 @@ public class ContractDetailResponse {
     private String note;
     private String sellerSignature;
     private String buyerSignature;
+    private String sellerSignatureCreatAt;
+    private String buyerSignatureCreatAt;
 }

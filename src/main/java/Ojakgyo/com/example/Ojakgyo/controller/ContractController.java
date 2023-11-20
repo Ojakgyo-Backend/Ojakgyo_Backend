@@ -26,9 +26,9 @@ public class ContractController {
 
     /** 사용자 서명 받기 */
     @PostMapping("/signature")
-    public Long saveSignature(Authentication authentication, @RequestBody SignatureRequest request){
-         Long contractId = contractService.saveSignature(request);
-         return contractId;
+    public String saveSignature(Authentication authentication, @RequestBody SignatureRequest request){
+         String SignatureCreatAt = contractService.saveSignature(request);
+         return SignatureCreatAt;
     }
 
     @GetMapping(value ="/details", produces = "application/json; charset=UTF-8")

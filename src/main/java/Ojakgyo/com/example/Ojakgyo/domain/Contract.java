@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -30,14 +31,20 @@ public class Contract {
     @Column(columnDefinition = "TEXT")
     private String sellerSignature;
 
+    @Column()
+    private LocalDateTime sellerSignatureCreateAt;
+
     @Column(columnDefinition = "TEXT")
     private String buyerSignature;
+
+    @Column()
+    private LocalDateTime buyerSignatureCreateAt;
 
     @OneToOne(mappedBy = "contract")
     private Deal deal;
 
     // 서명 저장
-    public void setSignature(Boolean isSeller,String signature){
+    public void setSignature(final Boolean isSeller,final String signature){
         if(isSeller){
             this.sellerSignature = signature;
         }
@@ -45,4 +52,24 @@ public class Contract {
             this.buyerSignature = signature;
         }
     }
+
+    // 서명 생성일 저장
+    public void setSignatureCreatAt(final Boolean isSeller,final LocalDateTime creatAt) {
+        if(isSeller){
+            this.sellerSignatureCreateAt = creatAt;
+        }
+        else{
+            this.buyerSignatureCreateAt = creatAt;
+        }
+    }
+
+    public boolean isDealerSignatureSaved(final boolean isSeller) {
+        if(isSeller){
+            return sellerSignatureCreateAt != null;
+        }
+        else{
+            return buyerSignatureCreateAt != null;
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package Ojakgyo.com.example.Ojakgyo.service;
 import Ojakgyo.com.example.Ojakgyo.BlockChain.RequestBlockChain;
 import Ojakgyo.com.example.Ojakgyo.domain.Contract;
 import Ojakgyo.com.example.Ojakgyo.domain.Deal;
+import Ojakgyo.com.example.Ojakgyo.domain.DealStatus;
 import Ojakgyo.com.example.Ojakgyo.dto.ContractDetailResponse;
 import Ojakgyo.com.example.Ojakgyo.dto.BlockChainContract;
 import Ojakgyo.com.example.Ojakgyo.dto.SignatureRequest;
@@ -14,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static Ojakgyo.com.example.Ojakgyo.domain.Utils.changeDateFormat;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +39,7 @@ public class ContractService {
                 .note(request.getNote())
                 .build();
         deal.updateContract(contract);
+        contractRepository.save(contract);
         dealRepository.save(deal);
     }
 
@@ -46,18 +51,26 @@ public class ContractService {
 
     private boolean isPresentContract(long dealId) {
         Optional<Contract> contract = Optional.ofNullable(dealService.findById(dealId).getContract());
-        if (!contract.isPresent()) {
-            return false;
-        }
-
-        return true;
+        return contract.isPresent();
     }
 
 
-    public Long saveSignature(SignatureRequest request) {
+    public String saveSignature(SignatureRequest request) {
         Contract contract = contractRepository.findById(request.getContractId()).get();
         contract.setSignature(request.getIsSeller(), request.getSignature());
-        return contractRepository.save(contract).getId();
+
+        final LocalDateTime current = LocalDateTime.now();
+        contract.setSignatureCreatAt(request.getIsSeller(), current);
+
+        // 내가 구매자라면 구매자가 아닌 판매자(상대방)의 서명이 저장되어 있는지 확인
+        if (contract.isDealerSignatureSaved(!request.getIsSeller())) {
+            Deal deal = contract.getDeal();
+            deal.updateDealStatus(DealStatus.DEALING);
+            dealRepository.save(deal);
+        }
+
+        contractRepository.save(contract);
+        return changeDateFormat(current);
     }
 
     public ContractDetailResponse findById(Long contractId) {
@@ -67,7 +80,10 @@ public class ContractService {
                 .repAndRes(contract.getRepAndRes())
                 .note(contract.getNote())
                 .buyerSignature(contract.getBuyerSignature())
-                .sellerSignature(contract.getSellerSignature()).build();
+                .sellerSignature(contract.getSellerSignature())
+                .buyerSignatureCreatAt(changeDateFormat(contract.getBuyerSignatureCreateAt()))
+                .sellerSignatureCreatAt(changeDateFormat(contract.getSellerSignatureCreateAt()))
+                .build();
     }
 
     public BlockChainContract testBlock(long dealId) throws Exception {
