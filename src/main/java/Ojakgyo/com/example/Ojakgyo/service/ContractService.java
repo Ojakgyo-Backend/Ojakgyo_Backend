@@ -34,13 +34,15 @@ public class ContractService {
         if(deal.getContract() != null){
             throw new NoSuchDataException(ErrorCode.DUPLICATED_CONTRACT);
         }
-        Contract contract = Ojakgyo.com.example.Ojakgyo.domain.Contract.builder()
+
+        Contract contract = Contract.builder()
                 .repAndRes(request.getRepAndRes())
                 .note(request.getNote())
                 .build();
+
         deal.updateContract(contract);
         dealRepository.save(deal);
-        return contractRepository.save(contract).getId();
+        return deal.getContract().getId();
     }
 
     public void deleteContract(long dealId){
