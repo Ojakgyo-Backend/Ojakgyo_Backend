@@ -18,6 +18,13 @@ public class DealDetailService {
     public void completeBuyerDeal(Long dealId) {
         Deal deal = dealRepository.findDealById(dealId);
         deal.updateDealStatus(DealStatus.COMPLETED);
+
+        // 시연을 위한 락커 비밀 번호 고정 거래 완료하면 다시 첫번쨰 비밀 번호로
+        Locker locker = deal.getLocker();
+        locker.setPassword("95AC02");
+        lockerService.saveLocker(locker);
+        // 시연 코드 끝
+
         dealRepository.save(deal);
     }
 
