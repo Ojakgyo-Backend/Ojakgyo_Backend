@@ -24,7 +24,8 @@ public class DealDetailService {
     public String changePassword(Long dealID) {
         Deal deal = dealRepository.findDealById(dealID);
         Locker locker = lockerService.findById(deal.getLocker().getId());
-        String changedPassword = locker.updatePassword();
+//        String changedPassword = locker.updatePassword();
+        String changedPassword = "434D11";  //시연을 위한 비번 고정
         lockerService.saveLocker(locker);
         return changedPassword;
     }
