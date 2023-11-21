@@ -3,6 +3,7 @@ package Ojakgyo.com.example.Ojakgyo.service;
 import Ojakgyo.com.example.Ojakgyo.domain.*;
 import Ojakgyo.com.example.Ojakgyo.dto.DealDetailsResponse;
 import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
+import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,20 +13,32 @@ import static Ojakgyo.com.example.Ojakgyo.domain.Utils.changeDateFormat;
 @RequiredArgsConstructor
 public class DealDetailService {
     private final DealRepository dealRepository;
+    private final LockerRepository lockerRepository;
     private final LockerService lockerService;
     private final UserService userService;
 
     public void completeBuyerDeal(Long dealId) {
         Deal deal = dealRepository.findDealById(dealId);
         deal.updateDealStatus(DealStatus.COMPLETED);
+
+        // 시연을 위한 락커 비밀 번호 고정 거래 완료하면 다시 첫번쨰 비밀 번호로
+        Locker locker = deal.getLocker();
+        locker.setPassword("95AC02");
+        lockerRepository.save(locker);
+        // 시연 코드 끝
+
         dealRepository.save(deal);
     }
 
     public String changePassword(Long dealID) {
         Deal deal = dealRepository.findDealById(dealID);
         Locker locker = lockerService.findById(deal.getLocker().getId());
-        String changedPassword = locker.updatePassword();
-        lockerService.saveLocker(locker);
+//        String changedPassword = locker.updatePassword();
+        //시연을 위한 비번 고정
+        String changedPassword = "434D11";
+        locker.setPassword("434D11");
+        //
+        lockerRepository.save(locker);
         return changedPassword;
     }
 

@@ -29,7 +29,7 @@ public class ContractService {
     private final DealRepository dealRepository;
     private final RequestBlockChain requestBlockChain;
 
-    public Long createContract(BlockChainContract request) throws IOException {
+    public Long saveBlock(BlockChainContract request) throws Exception {
         Deal deal = dealService.findById(request.getDealId());
         if(deal.getContract() != null){
             throw new NoSuchDataException(ErrorCode.DUPLICATED_CONTRACT);
@@ -40,6 +40,7 @@ public class ContractService {
                 .note(request.getNote())
                 .build();
 
+        requestBlockChain.requestSaveBlock(request);
         deal.updateContract(contract);
         dealRepository.save(deal);
         return deal.getContract().getId();
@@ -55,7 +56,6 @@ public class ContractService {
         Optional<Contract> contract = Optional.ofNullable(dealService.findById(dealId).getContract());
         return contract.isPresent();
     }
-
 
     public String saveSignature(SignatureRequest request) {
         Contract contract = contractRepository.findById(request.getContractId()).get();
@@ -75,12 +75,14 @@ public class ContractService {
         return changeDateFormat(current);
     }
 
-    public ContractDetailResponse findById(Long contractId) {
+    public ContractDetailResponse getContract(Long contractId) throws Exception {
         Contract contract = contractRepository.findById(contractId).get();
+        Long dealId = contract.getDeal().getId();
+        BlockChainContract blockChainContract = requestBlockChain.requestGetBlock(dealId);
 
         return ContractDetailResponse.builder()
-                .repAndRes(contract.getRepAndRes())
-                .note(contract.getNote())
+                .repAndRes(blockChainContract.getRepAndRes())
+                .note(blockChainContract.getNote())
                 .buyerSignature(contract.getBuyerSignature())
                 .sellerSignature(contract.getSellerSignature())
                 .buyerSignatureCreatAt(changeDateFormat(contract.getBuyerSignatureCreateAt()))
@@ -88,28 +90,43 @@ public class ContractService {
                 .build();
     }
 
-    public BlockChainContract testBlock(long dealId) throws Exception {
-        return requestBlockChain.requestBlock(dealId);
-    }
 
     /**
-     * 아래는 api 불러오기 성공하면 수정
+     * 블록체인 연결 없이 db에만 컨트렉트 저장 (블록체인 연결 전 테스트 용)
      */
-//    public void saveBlock(BlockChainContract request) throws Exception {
+//    public Long createContract(BlockChainContract request) throws IOException {
 //        Deal deal = dealService.findById(request.getDealId());
 //        if(deal.getContract() != null){
 //            throw new NoSuchDataException(ErrorCode.DUPLICATED_CONTRACT);
 //        }
-////        Contract contract = Ojakgyo.com.example.Ojakgyo.domain.Contract.builder()
-////                .repAndRes(request.getRepAndRes())
-////                .note(request.getNote())
-////                .build();
-////        deal.updateContract(contract);
-////        dealRepository.save(deal);
-//        blockChain.createContract(request);
 //
+//        Contract contract = Contract.builder()
+//                .repAndRes(request.getRepAndRes())
+//                .note(request.getNote())
+//                .build();
+//
+//        deal.updateContract(contract);
+//        dealRepository.save(deal);
+//        return deal.getContract().getId();
 //    }
+
+    /**
+     * 블록체인 연결 없이 db에만 요청 컨트렉트 조회 (블록체인 연결 전 테스트 용)
+     */
+//    public ContractDetailResponse findById(Long contractId) {
+//        Contract contract = contractRepository.findById(contractId).get();
 //
+//        return ContractDetailResponse.builder()
+//                .repAndRes(contract.getRepAndRes())
+//                .note(contract.getNote())
+//                .buyerSignature(contract.getBuyerSignature())
+//                .sellerSignature(contract.getSellerSignature())
+//                .buyerSignatureCreatAt(changeDateFormat(contract.getBuyerSignatureCreateAt()))
+//                .sellerSignatureCreatAt(changeDateFormat(contract.getSellerSignatureCreateAt()))
+//                .build();
+//    }
+
+    // 변조비교
 //    public ContractDetailResponse compareBlock(Long dealId , Long contractId) throws Exception {
 //        Contract contract = contractRepository.findById(contractId).get();
 //        BlockChainContract blockChainContract = blockChain.getContract(dealId);
