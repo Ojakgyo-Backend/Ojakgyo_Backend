@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class RequestBlockChain {
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final String BlockChainServer = "http://ec2-15-164-170-1.ap-northeast-2.compute.amazonaws.com:8081/api";
+    private final String BlockChainServer = "http://ec2-52-78-8-137.ap-northeast-2.compute.amazonaws.com:8081/api";
 
     public BlockChainContract requestSaveBlock(BlockChainContract request) {
         HttpHeaders headers = new HttpHeaders();
