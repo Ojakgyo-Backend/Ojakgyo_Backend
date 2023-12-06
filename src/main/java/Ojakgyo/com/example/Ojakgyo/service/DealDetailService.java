@@ -7,6 +7,9 @@ import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static Ojakgyo.com.example.Ojakgyo.domain.Utils.changeDateFormat;
 
 @Service
@@ -17,16 +20,13 @@ public class DealDetailService {
     private final LockerService lockerService;
     private final UserService userService;
 
+    // 비밀번호 리스트 정의
+    public static List<String> passwordList = Arrays.asList("95AC02", "434D11", "329D15", "2BA392", "92CC07", "A8A261", "BA3205", "AD2242", "DD3043", "109B17");
+    public static int currentPasswordIndex = 0;
+
     public void completeBuyerDeal(Long dealId) {
         Deal deal = dealRepository.findDealById(dealId);
         deal.updateDealStatus(DealStatus.COMPLETED);
-
-        // 시연을 위한 락커 비밀 번호 고정 거래 완료하면 다시 첫번쨰 비밀 번호로
-        Locker locker = deal.getLocker();
-        locker.setPassword("95AC02");
-        lockerRepository.save(locker);
-        // 시연 코드 끝
-
         dealRepository.save(deal);
     }
 
@@ -34,10 +34,15 @@ public class DealDetailService {
         Deal deal = dealRepository.findDealById(dealID);
         Locker locker = lockerService.findById(deal.getLocker().getId());
 //        String changedPassword = locker.updatePassword();
-        //시연을 위한 비번 고정
-        String changedPassword = "434D11";
-        locker.setPassword("434D11");
-        //
+        /** 시연을 위한 락커 비밀 번호 고정 , 원래는 위 주석 풀면됨**/
+        String changedPassword = passwordList.get(currentPasswordIndex);
+        locker.setPassword(changedPassword);
+
+        // 비밀번호 인덱스 업데이트
+        currentPasswordIndex = (currentPasswordIndex + 1) % passwordList.size();
+
+        /** 시연 코드 끝**/
+
         lockerRepository.save(locker);
         return changedPassword;
     }

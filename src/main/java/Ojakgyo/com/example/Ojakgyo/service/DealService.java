@@ -3,6 +3,7 @@ package Ojakgyo.com.example.Ojakgyo.service;
 import Ojakgyo.com.example.Ojakgyo.domain.*;
 import Ojakgyo.com.example.Ojakgyo.dto.*;
 import Ojakgyo.com.example.Ojakgyo.repository.DealRepository;
+import Ojakgyo.com.example.Ojakgyo.repository.LockerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,29 @@ import java.util.List;
 import java.util.Optional;
 
 import static Ojakgyo.com.example.Ojakgyo.domain.Utils.changeDateFormat;
+import static Ojakgyo.com.example.Ojakgyo.service.DealDetailService.currentPasswordIndex;
+import static Ojakgyo.com.example.Ojakgyo.service.DealDetailService.passwordList;
 
 @Service
 @RequiredArgsConstructor
 public class DealService {
     private final DealRepository dealRepository;
+    private final LockerRepository lockerRepository;
     private final UserService userService;
     private final LockerService lockerService;
 
     public Long createDeal(RegisterDealRequest request, User user){
         User[] users = isRole(user, findUser(request.getDealerId()), request.getIsSeller());
+
+        /** 시연을 위한 락커 비밀 번호 고정 거래 완료하면 다시 첫번쨰 비밀 번호로**/
+        Locker locker = findLocker(request.getLockerId());
+        locker.setPassword(passwordList.get(currentPasswordIndex));
+        lockerRepository.save(locker);
+
+        // 비밀번호 인덱스 업데이트
+        currentPasswordIndex = (currentPasswordIndex + 1) % passwordList.size();
+
+        /** 시연 코드 끝**/
 
         Deal deal = Deal.builder()
                 .dealStatus(NeedNotContract(request.getPrice()) ? DealStatus.DEALING : DealStatus.BEFORE)
@@ -38,7 +52,7 @@ public class DealService {
                 .updateAt(LocalDateTime.now())
                 .seller(users[0])
                 .buyer(users[1])
-                .locker(findLocker(request.getLockerId()))
+                .locker(locker)
                 .build();
         return dealRepository.save(deal).getId();
     }
