@@ -30,11 +30,18 @@ public class LockerController {
         return Map.of("result", "락커 생성 성공");
     }
 
+
     @PostMapping(value ="/check-password",produces = "application/json; charset=UTF-8")
     public boolean checkPassword(@RequestBody CheckLockerRequest request) throws IOException {
         return lockerService.checkPassword(request.getLockerId(),request.getPassword());
     }
 
+
+    @GetMapping(value = "/password", produces = "application/json; charset=UTF-8")
+    public String getPassword(@RequestParam Long lockerId) {
+        Locker findLocker = lockerService.findById(lockerId);
+        return findLocker.getPassword();
+    }
 
     // 락커 id로 조회
     @GetMapping(value ="/search-locker", produces = "application/json; charset=UTF-8")
